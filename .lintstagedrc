@@ -1,0 +1,17 @@
+{
+  "*.{md,json}": [
+    "prettier --cache --write"
+  ],
+  "*.{js,jsx}": [
+    "pnpm --filter @food/web umi lint --fix --eslint-only",
+    "prettier --cache --write"
+  ],
+  "*.{css,less}": [
+    "pnpm --filter @food/web umi lint --fix --stylelint-only",
+    "prettier --cache --write"
+  ],
+  "*.ts?(x)": [
+    "pnpm --filter @food/web umi lint --fix --eslint-only",
+    "prettier --cache --parser=typescript --write"
+  ]
+}
