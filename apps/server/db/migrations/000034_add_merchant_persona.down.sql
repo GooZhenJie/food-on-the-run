@@ -1,0 +1,3 @@
+-- PostgreSQL does not support removing individual enum values; this migration
+-- is effectively irreversible. A full down requires recreating user_role and
+-- every table / column referencing it, which is out of scope here.

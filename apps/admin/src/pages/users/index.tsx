@@ -55,6 +55,7 @@ export default function UsersPage() {
         columns={columns}
         dataSource={PLACEHOLDER_ROWS}
         pagination={{ pageSize: 20 }}
+        scroll={{ x: 'max-content' }}
       />
     </div>
   );

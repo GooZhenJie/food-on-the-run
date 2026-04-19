@@ -36,7 +36,7 @@ export default function RestaurantsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap gap-3 items-start md:items-center justify-between mb-6">
         <div>
           <h1 className="text-xl font-semibold text-gray-900 mb-1">Restaurants</h1>
           <p className="text-sm text-gray-500">
@@ -50,6 +50,7 @@ export default function RestaurantsPage() {
         columns={columns}
         dataSource={PLACEHOLDER_ROWS}
         pagination={{ pageSize: 20 }}
+        scroll={{ x: 'max-content' }}
       />
     </div>
   );

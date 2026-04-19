@@ -29,7 +29,7 @@ export const VersionsDrawer: React.FC<IVersionsDrawerProps> = ({
     <Drawer
       title={schemaKey ? `History · ${schemaKey}` : 'History'}
       open={open}
-      width={720}
+      width="min(720px, 100vw)"
       onClose={onClose}
       destroyOnClose
     >

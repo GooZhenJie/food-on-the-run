@@ -47,3 +47,19 @@ export function updateAdminUserRole(
     { method: 'PATCH', body: { role } },
   );
 }
+
+export interface IUserScopeRestaurant {
+  id: number;
+  name: string;
+}
+
+export interface IUserScope {
+  persona: TAdminRole;
+  restaurant_ids: number[];
+  restaurants: IUserScopeRestaurant[];
+  city_codes?: string[];
+}
+
+export function getUserScope(userId: string): Promise<IUserScope> {
+  return adminRequest<IUserScope>(`/api/admin/users/${userId}/scope`);
+}

@@ -36,8 +36,6 @@ Thumbs.db
 .env.production.local
 
 # IDEs
-.vscode/*
-!.vscode/extensions.json
 .idea
 *.suo
 *.ntvs*

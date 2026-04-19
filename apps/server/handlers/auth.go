@@ -6,6 +6,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -29,10 +30,12 @@ func NewAuthHandler(pool *pgxpool.Pool) *AuthHandler {
 }
 
 type authUserDTO struct {
-	ID    string `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	Role  string `json:"role"`
+	ID          string   `json:"id"`
+	Name        string   `json:"name"`
+	Email       string   `json:"email"`
+	Role        string   `json:"role"`
+	Roles       []string `json:"roles,omitempty"`
+	Permissions []string `json:"permissions,omitempty"`
 }
 
 type authResponseDTO struct {
@@ -156,6 +159,16 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		PasswordHash: pgtype.Text{String: passwordHash, Valid: true},
 	}); err != nil {
 		log.Printf("register: create credential failed: %v", err)
+		respondError(w, http.StatusInternalServerError, "internal server error")
+		return
+	}
+
+	if err := q.GrantDefaultRoleForPersona(ctx, db.GrantDefaultRoleForPersonaParams{
+		UserID:    user.ID,
+		Persona:   string(db.UserRoleCustomer),
+		GrantedBy: pgtype.Int8{Valid: false},
+	}); err != nil {
+		log.Printf("register: grant default role failed: %v", err)
 		respondError(w, http.StatusInternalServerError, "internal server error")
 		return
 	}
@@ -322,7 +335,11 @@ func (h *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AuthHandler) issueSession(ctx context.Context, user db.User, r *http.Request) (authResponseDTO, error) {
-	pair, refreshHash, refreshExpiresAt, err := auth.IssueTokenPair(user.ID, string(user.Role))
+	actor, err := auth.LoadActor(ctx, h.queries, user.ID, string(user.Role))
+	if err != nil {
+		return authResponseDTO{}, err
+	}
+	pair, refreshHash, refreshExpiresAt, err := auth.IssueTokenPair(actor)
 	if err != nil {
 		return authResponseDTO{}, err
 	}
@@ -339,10 +356,26 @@ func (h *AuthHandler) issueSession(ctx context.Context, user db.User, r *http.Re
 		return authResponseDTO{}, err
 	}
 
+	dto := toUserDTO(user)
+	dto.Roles = actor.Roles
+	dto.Permissions = sortedPermissions(actor.Permissions)
+
 	return authResponseDTO{
-		User:         toUserDTO(user),
+		User:         dto,
 		AccessToken:  pair.AccessToken,
 		RefreshToken: pair.RefreshToken,
 		ExpiresIn:    pair.ExpiresIn,
 	}, nil
+}
+
+func sortedPermissions(set map[string]struct{}) []string {
+	if len(set) == 0 {
+		return nil
+	}
+	out := make([]string, 0, len(set))
+	for k := range set {
+		out = append(out, k)
+	}
+	sort.Strings(out)
+	return out
 }

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.1",
+    "@food/shared": "workspace:*",
     "antd": "^6.3.6",
     "umi": "^4.6.25"
   },

@@ -17,11 +17,11 @@ export const ROLE_LABELS: Record<TAdminRole, string> = {
 export const ROLE_DESCRIPTIONS: Record<TAdminRole, string> = {
   customer: 'End user ordering food',
   rider: 'Delivery courier',
-  merchant: 'Restaurant owner / staff (Phase 3)',
+  merchant: 'Restaurant owner or staff',
   admin: 'Internal back-office operator',
 };
 
-export const SELECTABLE_ROLES: TAdminRole[] = ['customer', 'rider', 'admin'];
+export const SELECTABLE_ROLES: TAdminRole[] = ['customer', 'rider', 'merchant', 'admin'];
 
 export const ROLE_FILTER_OPTIONS = [
   { value: 'all', label: 'All roles' },

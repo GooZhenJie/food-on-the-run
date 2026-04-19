@@ -7,6 +7,7 @@ description: >-
   2. Modifying an existing component file (refactoring props, adjusting render structure);
   3. Deleting a component or moving/renaming its files.
   Core constraints: named exports only (no export default); Tailwind for styles (no SCSS/CSS modules);
+  conditional classes via cn (clsx + tailwind-merge) from @food/shared;
   shared/context types in type.d.ts, local props types may be inline; hooks in hooks.ts;
   component directory follows ComponentName/index.tsx structure.
 ---
@@ -15,9 +16,9 @@ description: >-
 
 ## Tech Stack
 
-- **Styling**: Tailwind CSS only. No SCSS, no CSS Modules.
-- **Inline styles**: Acceptable only for values that Tailwind cannot express (e.g., ECharts `style={{ height: 260 }}`). Do not use for spacing, color, or layout.
-- **No `classnames` package** — use template literals for conditional class merging: `` `base-class ${condition ? 'extra' : ''}` ``
+- **Styling**: Tailwind CSS only. **No SCSS, no CSS Modules, no styled-components.** Complex selectors use Tailwind variants / arbitrary selectors (`hover:`, `focus-within:`, `group-hover:`, `peer-*`, `data-[state=open]:`, `[&_.ant-xxx]:...`). Design tokens live in `tailwind.config` and `src/theme/antdTheme.ts` — never hard-code hex/spacing in components.
+- **Inline styles**: only for **values that must be computed at runtime** and cannot be pre-declared — e.g., ECharts `style={{ height: 260 }}`, sizes derived from props/state, or bridging a runtime value into a CSS variable (`style={{ '--h': `${h}px` }}` consumed by `className="h-[var(--h)]"`). **Not** for static spacing / color / layout — those go to Tailwind utilities and theme tokens. SCSS is **not** an alternative for runtime values; it is compile-time and would force the same `style`/CSS-variable bridge anyway.
+- **Class merging**: Use `cn()` from `@food/shared` (`import { cn } from '@food/shared'`). Source: `packages/shared/src/utils/cn.ts` (`twMerge(clsx(inputs))`). See **`monorepo-shared`** for all `packages/shared` layout rules. Do not add `classnames`. Avoid raw template-literal concatenation for conditional Tailwind utilities when conflicting utilities could both end up in the class string.
 
 ## Directory Structure
 
@@ -139,7 +140,7 @@ const STORAGE_KEY = '__fotr_<feature>__';
 - [ ] Shared / context types are in `type.d.ts`
 - [ ] Hooks with non-trivial logic extracted to `hooks.ts`
 - [ ] Constants / fixtures placed by **ownership** — component-owned → `config.ts` / `mock.ts`; page-owned → `pages/<page>/config.ts` or `schema.ts`; app-owned → `src/config/` or `src/mock/`
-- [ ] Styling done with Tailwind; inline styles only for dynamic/chart values
+- [ ] Styling done with Tailwind (no SCSS / CSS Modules); conditional classes merged with `cn()` from `@food/shared`; inline styles only for runtime-computed values
 - [ ] Context (if needed) in `context.ts` with a typed `useXxx` hook
 
 ## Modifying a Component — Checklist
@@ -147,7 +148,8 @@ const STORAGE_KEY = '__fotr_<feature>__';
 - [ ] No new `export default` introduced
 - [ ] If types now need to be shared, move them to `type.d.ts`
 - [ ] No SCSS or CSS Modules added
-- [ ] Inline styles not added for layout/spacing/color (Tailwind instead)
+- [ ] Conditional classes still merged with `cn()` from `@food/shared` (not `classnames` / template-only concatenation for Tailwind conflicts)
+- [ ] Inline styles not added for static layout/spacing/color (Tailwind utilities + theme tokens instead); inline only for runtime-computed values
 - [ ] Do **not** fix pre-existing lint errors unrelated to the current change
 
 ## Deleting a Component — Checklist

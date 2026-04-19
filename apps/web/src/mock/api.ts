@@ -6,16 +6,16 @@ import {
   CUISINES,
 } from './restaurants';
 import { mockOAuth, mockForgotPassword } from './auth';
-import { RESTAURANT_PAGE_SCHEMA } from '@/pages/restaurant/schema';
-import { LOGIN_PAGE_SCHEMA } from '@/pages/login/schema';
-import { SIGN_UP_PAGE_SCHEMA } from '@/pages/sign-up/schema';
+import { RESTAURANT_PAGE_SCHEMA } from '../pages/restaurant/schema';
+import { LOGIN_PAGE_SCHEMA } from '../pages/login/schema';
+import { SIGN_UP_PAGE_SCHEMA } from '../pages/sign-up/schema';
 import {
   SALES_TREND,
   CATEGORY_RADAR,
   POPULAR_DISHES_WORDCLOUD,
   KPI_CARDS,
   GEO_RESTAURANTS,
-} from '@/pages/dashboard/mock';
+} from '../pages/dashboard/mock';
 
 export default {
   'GET /api/restaurants': RESTAURANTS,

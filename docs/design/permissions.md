@@ -136,16 +136,18 @@ CREATE TABLE role_permissions (
   PRIMARY KEY (role_id, permission_id)
 );
 
--- 000031_create_user_roles.up.sql
-CREATE TABLE user_roles (
+-- 000031_create_user_roles.up.sql (physical table: user_role_assignments)
+CREATE TABLE user_role_assignments (
   user_id    BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   role_id    BIGINT NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
   granted_by BIGINT REFERENCES users(id),
   granted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   PRIMARY KEY (user_id, role_id)
 );
-CREATE INDEX idx_user_roles_role_id ON user_roles(role_id);
+CREATE INDEX idx_user_role_assignments_role_id ON user_role_assignments(role_id);
 ```
+
+> 实现细节：物理表取名 `user_role_assignments`，避开 sqlc 把 `user_roles` 生成为与 `user_role` 枚举同名的 `UserRole` struct 的冲突。`000032_seed_rbac.up.sql` 同步：内置角色/权限/绑定 + 现网 admin 用户自动获得 `admin.super` + 所有用户自动获得 `<persona>.default`。
 
 ### 3.3 Scope 相关字段
 
@@ -375,10 +377,11 @@ migration seed 内置以下角色（`is_system = true`，不可删除）：
 
 | Role code | 包含权限（示例） |
 |---|---|
-| `admin.super` | `*`（Can 函数短路） |
-| `admin.ops` | `restaurant:*`, `menu:*`, `schema:*`, `promotion:*` |
-| `admin.cs` | `order:read`, `order:refund`, `order:cancel`, `user:read` |
+| `admin.super` | `*`（Can 函数短路；持有 `role:write` 可改他人 RBAC） |
+| `admin.ops` | `restaurant:*`, `menu:*`, `schema:*`, `promotion:*`, `user:read` |
+| `admin.cs` | `order:read`, `order:refund`, `order:cancel`, `user:read`, `user:write` |
 | `admin.finance` | `payment:read`, `payout:*`, `order:read` |
+| `admin.default` | `user:read`（persona 切到 admin 时默认授予，待超管提权） |
 
 ### merchant persona
 
@@ -411,20 +414,29 @@ migration seed 内置以下角色（`is_system = true`，不可删除）：
 
 **不动 DB 表结构**，只把现有 role 字段真正用起来。`merchant` 枚举值延后到 Phase 3，避开 `golang-migrate` 对 `ALTER TYPE ADD VALUE` 的事务包裹限制。
 
-### Phase 2 — 引入 RBAC（下个迭代）
+### Phase 2 — 引入 RBAC（已完成）
 
-- [ ] migration 000028 ~ 000031（roles / permissions / role_permissions / user_roles）
-- [ ] seed 内置角色与权限点
-- [ ] 登录/刷新时加载 `permissions[]` 塞进 JWT
-- [ ] 新增 `middleware.RequirePermission(perm)`
-- [ ] admin 前端加「角色管理」页面（仅 `admin.super` 可见）
+- [x] migration 000028 ~ 000032（roles / permissions / role_permissions / **user_role_assignments** / seed）
+- [x] seed 内置 25 个权限点 + 7 个系统角色（`admin.super/ops/cs/finance/default` + `rider.default` + `customer.default`）
+- [x] 登录 / 注册 / refresh 时通过 `auth.LoadActor` 读取 roles + permissions 塞进 JWT claims
+- [x] `middleware.RequirePermission(perm)` 在 `PUT /api/admin/users/:id/roles` 上生效（仅 `admin.super` 通过）
+- [x] admin 控制台 `Permissions` 菜单重构为 Tabs：Users（persona + RBAC 按钮）/ System roles（只读总览）；`Edit roles` 按钮仅 `admin.super` 可点
 
-### Phase 3 — ABAC Data Scope（按业务需要）
+> 实现细节：物理表名用 `user_role_assignments` 而不是 `user_roles`，因为 sqlc 会把 `user_roles` 表生成为 `UserRole` struct，与已有的 `user_role` 枚举对应的 `UserRole` struct 重名。业务层仍叫 "user roles"。
 
-- [ ] `restaurants.owner_user_id` 字段（已有则跳过）
-- [ ] 登录时按 persona 计算 `scopes` 塞进 JWT
-- [ ] 跨租户 query 强制命名为 `*ByRestaurants` / `*ByUserID` / `*ByCityCodes`
-- [ ] merchant app 接入
+### Phase 3 — ABAC Data Scope（已完成）
+
+- [x] `restaurants.owner_id` 字段已存在（migration 000004），无需新增
+- [x] 新增 migration 000034（merchant enum）+ 000035（merchant.owner / staff / default 角色 seed）
+- [x] `auth.LoadActor` 计算 `scopes.restaurant_ids`（merchant persona 按 `owner_id` 查 `restaurants`），塞进 JWT `AccessClaims.Scopes`
+- [x] 跨租户 query 全部 `*By<Scope>` / `*In<Scope>` 命名：`ListRestaurantIDsByOwner` / `ListRestaurantsByOwner` / `ListOrdersByRestaurants` / `CountOrdersByRestaurants` / `GetOrderInRestaurants` / `UpdateOrderStatusInRestaurants`
+- [x] merchant 端 4 个核心端点：`GET /api/merchant/restaurants`、`GET /api/merchant/restaurants/{id}`、`GET /api/merchant/orders`、`PATCH /api/merchant/orders/{id}/status`；均挂 `RequireAuth + RequireMerchant`
+- [x] `handlers/merchant.go` 所有查询强制传 `actor.Scopes.RestaurantIDs`，scope 为空直接返回空列表，从不打 DB 全表
+- [x] `middleware.Audit` 落 `audit_logs`，覆盖 5 个写接口（见 [docs/api/audit-logs.md](../api/audit-logs.md)）
+- [x] admin 控制台 `Edit roles` drawer 现在展示 merchant user 名下店铺摘要（`GET /api/admin/users/{id}/scope`）
+- [x] `.cursor/skills/postgresql-naming-conventions/SKILL.md` 新增跨租户查询命名硬约束
+
+**merchant 端前端 app**：独立项目，不在本仓库范围内。
 
 ## 9. 安全与审计
 
@@ -469,11 +481,15 @@ migration seed 内置以下角色（`is_system = true`，不可删除）：
 | 不支持角色继承 | 扁平 role + 组合 | 授权略冗余，但调试直观，不会出现「为什么这人有这权限」的迷路 |
 | Scope 过滤靠 handler 自觉 | 命名约定 + code review | 依赖开发纪律；缓解：跨租户 query 必须带 `By*` 后缀，review 必查 |
 | 超管 bypass 所有 Can 判断 | `admin.super` 短路 | 一旦超管账号被盗影响面大；缓解：超管账号强制开 2FA + 所有操作落审计 |
+| `merchant.staff` 无 user 绑定途径 | Phase 3 仅支持 `merchant.owner`（scope 来自 `restaurants.owner_id`） | 当真有 staff 需求时再补 `restaurant_staff_assignments(user_id, restaurant_id)` |
+| `scopes.city_codes` 在 JWT 里占位但未计算 | 设计留接口，无业务方使用 | 后续若加「区域经理 admin」再补 |
+| scope 变更（admin 改 `owner_id`）最多延迟 1h | 不做主动踢下线 | 紧急生效需手动清空 `sessions` 强制重登 |
+| Audit 写入异步、失败只记 log | 保证不拖慢主响应 | 极小概率丢 1~2 条审计；acceptable for FOTR scale |
 
 ---
 
 ## 附录：相关文档
 
-- API 文档：[../api/auth.md](../api/auth.md)
+- API 文档：[../api/auth.md](../api/auth.md)、[../api/merchant.md](../api/merchant.md)、[../api/audit-logs.md](../api/audit-logs.md)
 - 后端约定：`.cursor/skills/go-server-conventions/SKILL.md`
 - DB 命名约定：`.cursor/skills/postgresql-naming-conventions/SKILL.md`

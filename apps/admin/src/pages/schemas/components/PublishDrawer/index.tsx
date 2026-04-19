@@ -171,7 +171,7 @@ export const PublishDrawer: React.FC<IPublishDrawerProps> = ({
     <Drawer
       title={step === 'edit' ? 'Publish page schema' : 'Review changes'}
       open={open}
-      width={step === 'review' ? 960 : 640}
+      width={step === 'review' ? 'min(960px, 100vw)' : 'min(640px, 100vw)'}
       onClose={handleClose}
       destroyOnClose
       extra={

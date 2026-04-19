@@ -5,10 +5,11 @@ alwaysApply: true
 
 # Skill Dispatch — Food on the Run
 
-This is a **pnpm + Turborepo monorepo** with three apps:
+This is a **pnpm + Turborepo monorepo** with three apps and shared TS:
 - `apps/web` — customer-facing frontend (UmiJS + React + TypeScript + Tailwind + antd)
 - `apps/admin` — internal back-office console (UmiJS + React + TypeScript + Tailwind + antd)
 - `apps/server` — single Go + PostgreSQL backend serving both frontends
+- `packages/shared` — `@food/shared`; pure TypeScript shared by **web + admin** only (see `monorepo-shared` skill)
 
 Before writing any code, follow the steps below.
 
@@ -16,14 +17,14 @@ Before writing any code, follow the steps below.
 
 | What you are about to do | Skill to load |
 |---|---|
-| Create / modify / delete a React **component** or **page** under `apps/web/src/` | `component-conventions` **+** `ui-design-system` |
-| Create / modify / delete a React **component** or **page** under `apps/admin/src/` | `component-conventions` |
-| Restyle, redesign, or add **user-facing UI** under `apps/web/src/` | `ui-design-system` |
+| Create / modify / delete a React **component** or **page** under `apps/web/src/` OR `apps/admin/src/` | `component-conventions` **+** `ui-design-system` |
+| Restyle, redesign, or add UI in `apps/web/src/` OR `apps/admin/src/` (including any antd `Table`, `Drawer`, `Modal`, `Form`, `Menu`, `Sider`) | `ui-design-system` |
 | Add, rename, move, or delete any **file or folder** under `apps/web/src/` | `directory-structure` |
 | Add, rename, move, or delete any **file or folder** under `apps/admin/src/` | `directory-structure-admin` |
 | Add or modify an **API service function** under `apps/web/src/services/` or `apps/admin/src/services/` | `web-api-service` |
 | Create / modify a **DB migration** (`.sql`), table, column, index, enum, or Go struct mapped to DB | `postgresql-naming-conventions` |
 | Add or modify an HTTP **handler**, route, middleware, or any Go file under `apps/server/` | `go-server-conventions` |
+| Add, rename, move, or delete any file under **`packages/shared/`** | `monorepo-shared` |
 
 ## Step 2 — Load the Skill Before Writing Code
 
@@ -38,6 +39,7 @@ Use the `Read` tool on the exact path listed below. **Do not skip this step.**
 | `web-api-service` | `.cursor/skills/web-api-service/SKILL.md` |
 | `postgresql-naming-conventions` | `.cursor/skills/postgresql-naming-conventions/SKILL.md` |
 | `go-server-conventions` | `.cursor/skills/go-server-conventions/SKILL.md` |
+| `monorepo-shared` | `.cursor/skills/monorepo-shared/SKILL.md` |
 
 ## Step 3 — Implement
 
@@ -55,10 +57,9 @@ After completing the implementation, run any required follow-up:
 | Any SQL query file under `db/queries/` | `cd apps/server && sqlc generate` |
 | New consumer Go handler added | Verify route is registered under `/api/*` in `registerRoutes` in `main.go` |
 | New admin Go handler added | Verify route is registered under `/api/admin/*` and the `RequireAdmin` + `Audit` middleware chain applies |
-| New component created in `apps/web/` | Verify against the `component-conventions` **and** `ui-design-system` checklists |
-| New component created in `apps/admin/` | Verify against the `component-conventions` **and** `directory-structure-admin` checklists |
-| New consumer page added | Verify against the `ui-design-system` New Page checklist (pill primary button, orange brand color, Inter font, mobile-first) |
-| New admin page added | Verify against the `directory-structure-admin` New Module checklist (uses `DataTable` / `FormDrawer` primitives, route registered in `apps/admin/.umirc.ts`) |
+| New component created in `apps/web/` OR `apps/admin/` | Verify against the `component-conventions` **and** `ui-design-system` (New Component) checklists |
+| New consumer page added | Verify against the `ui-design-system` New Page (shared) **and** New Web Page checklists (pill primary, consumer-scale typography, mobile-first, Three Hard Responsive Rules) |
+| New admin page added | Verify against the `directory-structure-admin` New Module checklist (uses `DataTable` / `FormDrawer` primitives, route registered in `apps/admin/.umirc.ts`) **and** the `ui-design-system` New Page (shared) **and** New Admin Page checklists (renders inside `AdminLayout`, admin-scale typography, Three Hard Responsive Rules, survives 375 px viewport) |
 | Mock route removed | Confirm matching service function in `src/services/` is wired up |
 
 ---

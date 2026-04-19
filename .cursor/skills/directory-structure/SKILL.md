@@ -38,6 +38,8 @@ apps/web/src/
 └── utils/                # pure utility functions, no side effects
 ```
 
+TypeScript shared **only** between `apps/web` and `apps/admin` lives in **`packages/shared`** (`@food/shared`), with the same **`src/utils/`** mental model as this tree — see **`monorepo-shared`** skill (single source of truth). **`apps/server`** is Go and does not use this package.
+
 ---
 
 ## Placement Rules
@@ -51,6 +53,7 @@ apps/web/src/
 | Mock data fixture | `src/mock/<resource>.ts` |
 | Mock route map | `src/mock/api.ts` |
 | Pure utility/helper | `src/utils/index.ts` or `src/utils/<name>.ts` |
+| Pure TS helper needed by **web and admin** | `packages/shared/src/utils/<name>.ts` — see **`monorepo-shared`** |
 
 ---
 

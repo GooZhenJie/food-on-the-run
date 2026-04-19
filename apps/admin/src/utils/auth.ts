@@ -43,3 +43,20 @@ export const clearAuth = (): void => {
 };
 
 export const isAuthenticated = (): boolean => Boolean(getAccessToken());
+
+const ROLE_SUPER_ADMIN = 'admin.super';
+
+export const hasRole = (code: string): boolean => {
+  const user = getCurrentUser();
+  if (!user) return false;
+  return user.roles?.includes(code) ?? false;
+};
+
+export const hasPermission = (code: string): boolean => {
+  const user = getCurrentUser();
+  if (!user) return false;
+  if (user.roles?.includes(ROLE_SUPER_ADMIN)) return true;
+  return user.permissions?.includes(code) ?? false;
+};
+
+export const isSuperAdmin = (): boolean => hasRole(ROLE_SUPER_ADMIN);

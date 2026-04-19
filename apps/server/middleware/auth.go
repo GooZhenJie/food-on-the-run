@@ -33,12 +33,7 @@ func RequireAuth(next http.Handler) http.Handler {
 			writeError(w, http.StatusUnauthorized, "invalid or expired token")
 			return
 		}
-		actor := &auth.Actor{
-			UserID:      claims.UserID,
-			Persona:     claims.Role,
-			Roles:       nil,
-			Permissions: nil,
-		}
+		actor := auth.ClaimsToActor(claims)
 		ctx := context.WithValue(r.Context(), actorCtxKey{}, actor)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
@@ -66,6 +61,11 @@ func RequirePersona(persona string) func(http.Handler) http.Handler {
 // RequireAdmin is a convenience for the admin persona guard.
 func RequireAdmin(next http.Handler) http.Handler {
 	return RequirePersona(auth.PersonaAdmin)(next)
+}
+
+// RequireMerchant is a convenience for the merchant persona guard.
+func RequireMerchant(next http.Handler) http.Handler {
+	return RequirePersona(auth.PersonaMerchant)(next)
 }
 
 // RequirePermission is a placeholder for Phase 2; it reads fine today but

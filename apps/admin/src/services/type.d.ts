@@ -5,6 +5,8 @@ export interface IAdminAuthUser {
   name: string;
   email: string;
   role: TAdminRole;
+  roles?: string[];
+  permissions?: string[];
 }
 
 export interface IAdminAuthTokens {

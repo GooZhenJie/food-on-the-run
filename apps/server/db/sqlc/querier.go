@@ -9,28 +9,80 @@ import (
 )
 
 type Querier interface {
+	// Inserts a (role_id, permission_id) row by looking up the permission code.
+	// No-op when the permission code does not exist.
+	AddRolePermissionByCode(ctx context.Context, arg AddRolePermissionByCodeParams) error
+	AddUserRole(ctx context.Context, arg AddUserRoleParams) error
 	AdminCountUsers(ctx context.Context, arg AdminCountUsersParams) (int64, error)
 	AdminListUsers(ctx context.Context, arg AdminListUsersParams) ([]User, error)
 	AdminUpdateUserRole(ctx context.Context, arg AdminUpdateUserRoleParams) (User, error)
+	CountOrdersByRestaurants(ctx context.Context, restaurantIds []int64) (int64, error)
+	CountUserAssignmentsByRoleID(ctx context.Context, roleID int64) (int64, error)
 	CreatePageSchema(ctx context.Context, arg CreatePageSchemaParams) (PageSchema, error)
 	CreatePageSchemaVersion(ctx context.Context, arg CreatePageSchemaVersionParams) (PageSchemaVersion, error)
 	CreatePasswordCredential(ctx context.Context, arg CreatePasswordCredentialParams) (AuthCredential, error)
+	CreateRole(ctx context.Context, arg CreateRoleParams) (Role, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
+	DeleteRolePermissions(ctx context.Context, roleID int64) error
+	DeleteUserGrant(ctx context.Context, arg DeleteUserGrantParams) error
+	DeleteUserRolesByUserID(ctx context.Context, userID int64) error
 	GetActiveSessionByTokenHash(ctx context.Context, refreshTokenHash string) (Session, error)
+	GetOrderInRestaurants(ctx context.Context, arg GetOrderInRestaurantsParams) (Order, error)
 	GetPageSchemaByKey(ctx context.Context, key string) (PageSchema, error)
 	GetPageSchemaVersion(ctx context.Context, arg GetPageSchemaVersionParams) (PageSchemaVersion, error)
 	GetPasswordCredentialByUserID(ctx context.Context, userID int64) (AuthCredential, error)
+	GetPermissionByCode(ctx context.Context, code string) (Permission, error)
+	GetRestaurantByID(ctx context.Context, id int64) (Restaurant, error)
+	GetRoleByCode(ctx context.Context, code string) (Role, error)
+	GetRoleByID(ctx context.Context, id int64) (Role, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserByID(ctx context.Context, id int64) (User, error)
+	GetUserGrant(ctx context.Context, arg GetUserGrantParams) (GetUserGrantRow, error)
+	// Grants the <persona>.default role to the user (no-op if already granted).
+	GrantDefaultRoleForPersona(ctx context.Context, arg GrantDefaultRoleForPersonaParams) error
+	ListOrdersByRestaurants(ctx context.Context, arg ListOrdersByRestaurantsParams) ([]Order, error)
 	ListPageSchemaVersionsBySchemaID(ctx context.Context, pageSchemaID int64) ([]PageSchemaVersion, error)
 	ListPageSchemas(ctx context.Context) ([]PageSchema, error)
 	ListPageSchemasWithUpdater(ctx context.Context) ([]ListPageSchemasWithUpdaterRow, error)
+	ListPermissions(ctx context.Context) ([]Permission, error)
+	ListPermissionsByRoleID(ctx context.Context, roleID int64) ([]Permission, error)
+	ListRestaurantIDsByOwner(ctx context.Context, ownerID int64) ([]int64, error)
+	ListRestaurantSummariesByIDs(ctx context.Context, dollar_1 []int64) ([]ListRestaurantSummariesByIDsRow, error)
+	ListRestaurantsByOwner(ctx context.Context, ownerID int64) ([]Restaurant, error)
+	// Returns (role_id, permission_code) pairs for a batch of role ids.
+	// Used by LoadActor to hydrate each RoleBinding's permission set in one round-trip.
+	ListRolePermissionCodesByRoleIDs(ctx context.Context, dollar_1 []int64) ([]ListRolePermissionCodesByRoleIDsRow, error)
+	ListRoles(ctx context.Context) ([]Role, error)
+	ListRolesByPersona(ctx context.Context, persona UserRole) ([]Role, error)
+	ListRolesWithPermissions(ctx context.Context) ([]ListRolesWithPermissionsRow, error)
+	// Returns raw grant rows for a user (admin UI: show all including expired).
+	ListUserGrants(ctx context.Context, userID int64) ([]ListUserGrantsRow, error)
+	// Returns only non-expired grant rows for Actor evaluation.
+	ListUserGrantsForEval(ctx context.Context, userID int64) ([]ListUserGrantsForEvalRow, error)
+	// Returns distinct permission codes derived from the user's roles, persona-filtered.
+	ListUserPermissionCodes(ctx context.Context, userID int64) ([]string, error)
+	// Returns the full role binding (role + scope + expires_at) for a user,
+	// persona-filtered. Used by LoadActor.
+	ListUserRoleBindings(ctx context.Context, userID int64) ([]ListUserRoleBindingsRow, error)
+	// Returns role codes scoped to the user's current persona.
+	ListUserRoleCodes(ctx context.Context, userID int64) ([]string, error)
+	// Full role rows for a user (persona-filtered).
+	ListUserRolesDetail(ctx context.Context, userID int64) ([]Role, error)
 	RevokeSession(ctx context.Context, id int64) error
 	SoftDeletePageSchemaByKey(ctx context.Context, key string) (PageSchema, error)
+	SoftDeleteRole(ctx context.Context, id int64) error
 	UpdateAuthCredentialLastLogin(ctx context.Context, id int64) error
+	UpdateOrderStatusInRestaurants(ctx context.Context, arg UpdateOrderStatusInRestaurantsParams) (Order, error)
 	UpdatePageSchemaCurrent(ctx context.Context, arg UpdatePageSchemaCurrentParams) (PageSchema, error)
+	UpdateRoleName(ctx context.Context, arg UpdateRoleNameParams) (Role, error)
 	UpdateSessionLastUsed(ctx context.Context, id int64) error
+	// Writes / updates a single (user_id, permission_id) grant.
+	UpsertUserGrant(ctx context.Context, arg UpsertUserGrantParams) error
+	// Writes a (user_id, role_id) assignment with scope + expires_at.
+	// Re-runnable: on conflict overwrites scope / expires_at / granted_by.
+	UpsertUserRoleBinding(ctx context.Context, arg UpsertUserRoleBindingParams) error
+	WriteAuditLog(ctx context.Context, arg WriteAuditLogParams) error
 }
 
 var _ Querier = (*Queries)(nil)

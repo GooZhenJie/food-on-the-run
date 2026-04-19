@@ -30,6 +30,8 @@
 |---|---|---|
 | Users | [users.md](./users.md) | `users` |
 | Auth | [auth.md](./auth.md) | `auth_credentials`, `sessions` |
+| Roles & Permissions | [roles.md](./roles.md) | `roles`, `permissions`, `role_permissions`, `user_role_assignments` |
+| Merchant | [merchant.md](./merchant.md) | `restaurants`, `orders`（scope 过滤） |
 | Addresses | [addresses.md](./addresses.md) | `addresses` |
 | Restaurants | [restaurants.md](./restaurants.md) | `restaurants`, `restaurant_operating_hours` |
 | Menu | [menu.md](./menu.md) | `menu_categories`, `menu_items`, `menu_item_options`, `menu_item_option_values` |

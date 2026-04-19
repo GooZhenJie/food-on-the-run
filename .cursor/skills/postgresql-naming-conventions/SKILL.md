@@ -296,6 +296,32 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 - Query name comments follow sqlc convention: `-- name: QueryName :one/:many/:exec`
 - Run `sqlc generate` after every migration or query change
 
+### Cross-tenant query naming (Phase 3 ABAC)
+
+Any query that touches a **tenant-scoped** table (`orders`, `payments`, `restaurant_payouts`, `menu_items` under a restaurant, etc.) MUST encode the scope dimension in its name. Bare listing / fetching functions that return rows across tenants are forbidden — they are a rehearsal for a data leak.
+
+| Scope | Suffix | Example |
+|---|---|---|
+| Set of restaurants | `*ByRestaurants` / `*InRestaurants` | `ListOrdersByRestaurants`, `GetOrderInRestaurants`, `UpdateOrderStatusInRestaurants` |
+| Single owner user | `*ByOwner` | `ListRestaurantsByOwner`, `ListRestaurantIDsByOwner` |
+| Single customer user | `*ByUserID` | `ListOrdersByUserID` |
+| City codes | `*ByCityCodes` | `ListOrdersByCityCodes` |
+
+The matching handler MUST pass `actor.Scopes.RestaurantIDs` (or equivalent) in — never a `restaurant_id` from the request body / path.
+
+```go
+// ✅ correct — scope filter is baked into the query
+items, err := h.queries.ListOrdersByRestaurants(ctx, db.ListOrdersByRestaurantsParams{
+    RestaurantIds: actor.Scopes.RestaurantIDs,
+    ...
+})
+
+// ❌ wrong — trusts the client to say which restaurant, will leak cross-tenant rows
+items, err := h.queries.ListOrders(ctx, req.RestaurantID)
+```
+
+Admin-side endpoints that intentionally see across tenants (e.g. a future `GET /api/admin/orders`) MUST use a separately named query like `AdminListOrders` so the cross-tenant read is explicit in code review.
+
 ## Full Table Example
 
 ```sql

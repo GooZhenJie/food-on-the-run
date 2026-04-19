@@ -25,4 +25,5 @@ export default defineConfig({
   },
   npmClient: "pnpm",
   extraPostCSSPlugins: [require("tailwindcss"), require("autoprefixer")],
+  clickToComponent: { editor: "cursor" },
 });

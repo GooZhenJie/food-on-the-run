@@ -43,7 +43,10 @@ func main() {
 	authHandler := handlers.NewAuthHandler(pool)
 	pageSchemaHandler := handlers.NewPageSchemaHandler(pool)
 	userHandler := handlers.NewUserHandler(pool)
-	registerRoutes(mux, authHandler, pageSchemaHandler, userHandler)
+	roleHandler := handlers.NewRoleHandler(pool)
+	userGrantHandler := handlers.NewUserGrantHandler(pool)
+	merchantHandler := handlers.NewMerchantHandler(pool)
+	registerRoutes(mux, pool, authHandler, pageSchemaHandler, userHandler, roleHandler, userGrantHandler, merchantHandler)
 
 	handler := middleware.CORS(mux)
 
@@ -53,9 +56,13 @@ func main() {
 
 func registerRoutes(
 	mux *http.ServeMux,
+	pool *pgxpool.Pool,
 	ah *handlers.AuthHandler,
 	ph *handlers.PageSchemaHandler,
 	uh *handlers.UserHandler,
+	rh *handlers.RoleHandler,
+	ugh *handlers.UserGrantHandler,
+	mh *handlers.MerchantHandler,
 ) {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
@@ -73,13 +80,119 @@ func registerRoutes(
 	mux.HandleFunc("/api/public/schemas", ph.GetPublished)
 
 	adminMux := http.NewServeMux()
-	adminMux.HandleFunc("/api/admin/schemas", ph.AdminSchemas)
-	adminMux.HandleFunc("/api/admin/schemas/versions", ph.AdminVersions)
-	adminMux.HandleFunc("/api/admin/schemas/publish", ph.AdminPublish)
+
+	// Read-only admin endpoints — no audit.
+	adminMux.HandleFunc("GET /api/admin/schemas", ph.AdminList)
+	adminMux.HandleFunc("GET /api/admin/schemas/versions", ph.AdminVersions)
 	adminMux.HandleFunc("GET /api/admin/users", uh.AdminList)
-	adminMux.HandleFunc("PATCH /api/admin/users/{id}/role", uh.AdminUpdateRole)
+	adminMux.HandleFunc("GET /api/admin/users/{id}/scope", uh.AdminGetUserScope)
+	adminMux.HandleFunc("GET /api/admin/roles", rh.ListRoles)
+	adminMux.HandleFunc("GET /api/admin/permissions", rh.ListPermissions)
+	adminMux.HandleFunc("GET /api/admin/users/{id}/roles", rh.GetUserRoles)
+	adminMux.HandleFunc("GET /api/admin/users/{id}/grants", ugh.ListUserGrants)
+
+	// Write admin endpoints — audit.
+	adminMux.Handle(
+		"DELETE /api/admin/schemas",
+		middleware.Audit(pool, "schema.delete", "page_schema", middleware.NoResourceID)(
+			http.HandlerFunc(ph.AdminDelete),
+		),
+	)
+	adminMux.Handle(
+		"POST /api/admin/schemas/publish",
+		middleware.Audit(pool, "schema.publish", "page_schema", middleware.NoResourceID)(
+			http.HandlerFunc(ph.AdminPublish),
+		),
+	)
+	adminMux.Handle(
+		"PATCH /api/admin/users/{id}/role",
+		middleware.Audit(pool, "user.persona_change", "user", middleware.PathValueID("id"))(
+			http.HandlerFunc(uh.AdminUpdateRole),
+		),
+	)
+	adminMux.Handle(
+		"PUT /api/admin/users/{id}/roles",
+		middleware.RequirePermission("role:write")(
+			middleware.Audit(pool, "user.roles_replace", "user", middleware.PathValueID("id"))(
+				http.HandlerFunc(rh.PutUserRoles),
+			),
+		),
+	)
+
+	// Role CRUD — gated behind role:write.
+	adminMux.Handle(
+		"POST /api/admin/roles",
+		middleware.RequirePermission("role:write")(
+			middleware.Audit(pool, "role.create", "rbac", middleware.NoResourceID)(
+				http.HandlerFunc(rh.CreateRole),
+			),
+		),
+	)
+	adminMux.Handle(
+		"PATCH /api/admin/roles/{id}",
+		middleware.RequirePermission("role:write")(
+			middleware.Audit(pool, "role.update", "rbac", middleware.PathValueID("id"))(
+				http.HandlerFunc(rh.UpdateRole),
+			),
+		),
+	)
+	adminMux.Handle(
+		"DELETE /api/admin/roles/{id}",
+		middleware.RequirePermission("role:write")(
+			middleware.Audit(pool, "role.delete", "rbac", middleware.PathValueID("id"))(
+				http.HandlerFunc(rh.DeleteRole),
+			),
+		),
+	)
+	adminMux.Handle(
+		"PUT /api/admin/roles/{id}/permissions",
+		middleware.RequirePermission("role:write")(
+			middleware.Audit(pool, "role.permissions_update", "rbac", middleware.PathValueID("id"))(
+				http.HandlerFunc(rh.PutRolePermissions),
+			),
+		),
+	)
+	adminMux.Handle(
+		"PUT /api/admin/users/{id}/roles/{role_id}/scope",
+		middleware.RequirePermission("role:write")(
+			middleware.Audit(pool, "user_role.scope_update", "rbac", middleware.PathValueID("id"))(
+				http.HandlerFunc(rh.PutUserRoleScope),
+			),
+		),
+	)
+
+	// User-level permission overrides (grants) — gated behind role:write.
+	adminMux.Handle(
+		"PUT /api/admin/users/{id}/grants/{permission_id}",
+		middleware.RequirePermission("role:write")(
+			middleware.Audit(pool, "user_grant.upsert", "rbac", middleware.PathValueID("id"))(
+				http.HandlerFunc(ugh.PutUserGrant),
+			),
+		),
+	)
+	adminMux.Handle(
+		"DELETE /api/admin/users/{id}/grants/{permission_id}",
+		middleware.RequirePermission("role:write")(
+			middleware.Audit(pool, "user_grant.delete", "rbac", middleware.PathValueID("id"))(
+				http.HandlerFunc(ugh.DeleteUserGrant),
+			),
+		),
+	)
 
 	mux.Handle("/api/admin/", middleware.RequireAuth(middleware.RequireAdmin(adminMux)))
+
+	merchantMux := http.NewServeMux()
+	merchantMux.HandleFunc("GET /api/merchant/restaurants", mh.ListMyRestaurants)
+	merchantMux.HandleFunc("GET /api/merchant/restaurants/{id}", mh.GetMyRestaurant)
+	merchantMux.HandleFunc("GET /api/merchant/orders", mh.ListMyOrders)
+	merchantMux.Handle(
+		"PATCH /api/merchant/orders/{id}/status",
+		middleware.Audit(pool, "order.status_change", "order", middleware.PathValueID("id"))(
+			http.HandlerFunc(mh.UpdateOrderStatus),
+		),
+	)
+
+	mux.Handle("/api/merchant/", middleware.RequireAuth(middleware.RequireMerchant(merchantMux)))
 }
 
 func runMigrations(databaseURL string) {

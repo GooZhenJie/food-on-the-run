@@ -139,6 +139,7 @@ export default function SchemasPage() {
       key: 'actions',
       width: 180,
       align: 'right',
+      fixed: 'right',
       render: (_, row) => {
         const menuItems: MenuProps['items'] = [
           {
@@ -193,7 +194,7 @@ export default function SchemasPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap gap-3 items-start md:items-center justify-between mb-6">
         <div>
           <h1 className="text-xl font-semibold text-gray-900 mb-1">
             Page Schemas
@@ -216,6 +217,7 @@ export default function SchemasPage() {
         dataSource={rows}
         loading={loading}
         pagination={{ pageSize: 20 }}
+        scroll={{ x: 'max-content' }}
       />
       <PublishDrawer
         open={publishOpen}

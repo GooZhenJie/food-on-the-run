@@ -685,6 +685,7 @@ const (
 	UserRoleCustomer UserRole = "customer"
 	UserRoleRider    UserRole = "rider"
 	UserRoleAdmin    UserRole = "admin"
+	UserRoleMerchant UserRole = "merchant"
 )
 
 func (e *UserRole) Scan(src interface{}) error {
@@ -1059,6 +1060,15 @@ type PaymentRefund struct {
 	DeletedAt        pgtype.Timestamptz
 }
 
+type Permission struct {
+	ID          int64
+	Code        string
+	Description pgtype.Text
+	CreatedAt   pgtype.Timestamptz
+	UpdatedAt   pgtype.Timestamptz
+	DeletedAt   pgtype.Timestamptz
+}
+
 type Promotion struct {
 	ID                int64
 	Code              string
@@ -1174,6 +1184,23 @@ type RiderProfile struct {
 	DeletedAt           pgtype.Timestamptz
 }
 
+type Role struct {
+	ID        int64
+	Code      string
+	Name      string
+	Persona   UserRole
+	IsSystem  bool
+	CreatedAt pgtype.Timestamptz
+	UpdatedAt pgtype.Timestamptz
+	DeletedAt pgtype.Timestamptz
+}
+
+type RolePermission struct {
+	RoleID       int64
+	PermissionID int64
+	GrantedAt    pgtype.Timestamptz
+}
+
 type Session struct {
 	ID               int64
 	UserID           int64
@@ -1198,6 +1225,26 @@ type User struct {
 	CreatedAt pgtype.Timestamptz
 	UpdatedAt pgtype.Timestamptz
 	DeletedAt pgtype.Timestamptz
+}
+
+type UserPermissionGrant struct {
+	UserID       int64
+	PermissionID int64
+	Effect       int16
+	Scope        []byte
+	Reason       pgtype.Text
+	GrantedBy    pgtype.Int8
+	GrantedAt    pgtype.Timestamptz
+	ExpiresAt    pgtype.Timestamptz
+}
+
+type UserRoleAssignment struct {
+	UserID    int64
+	RoleID    int64
+	GrantedBy pgtype.Int8
+	GrantedAt pgtype.Timestamptz
+	Scope     []byte
+	ExpiresAt pgtype.Timestamptz
 }
 
 type WebhookEvent struct {
