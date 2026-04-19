@@ -1,0 +1,24 @@
+{
+  "name": "@food/admin",
+  "private": true,
+  "author": "v_fzjgoo <v_fzjgoo@global.tencent.com>",
+  "scripts": {
+    "dev": "PORT=8001 umi dev",
+    "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^6.1.1",
+    "antd": "^6.3.6",
+    "umi": "^4.6.25"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "@umijs/plugins": "^4.6.25",
+    "autoprefixer": "^10.5.0",
+    "tailwindcss": "^3"
+  }
+}

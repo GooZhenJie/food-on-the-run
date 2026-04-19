@@ -10,12 +10,20 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.1",
+    "antd": "^6.3.6",
+    "echarts": "^5.6.0",
+    "echarts-for-react": "^3.0.6",
+    "echarts-wordcloud": "^2.1.0",
+    "react-virtualized": "^9.22.6",
     "umi": "^4.6.25"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "@types/react-virtualized": "^9.22.3",
     "@umijs/plugins": "^4.6.25",
+    "autoprefixer": "^10.5.0",
     "tailwindcss": "^3"
   }
 }
