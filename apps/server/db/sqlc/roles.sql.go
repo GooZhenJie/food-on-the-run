@@ -21,8 +21,8 @@ ON CONFLICT DO NOTHING
 `
 
 type AddRolePermissionByCodeParams struct {
-	Column1 int64
-	Code    string
+	Column1 int64  `json:"column_1"`
+	Code    string `json:"code"`
 }
 
 // Inserts a (role_id, permission_id) row by looking up the permission code.
@@ -50,9 +50,9 @@ RETURNING id, code, name, persona, is_system, created_at, updated_at, deleted_at
 `
 
 type CreateRoleParams struct {
-	Code    string
-	Name    string
-	Persona UserRole
+	Code    string   `json:"code"`
+	Name    string   `json:"name"`
+	Persona UserRole `json:"persona"`
 }
 
 func (q *Queries) CreateRole(ctx context.Context, arg CreateRoleParams) (Role, error) {
@@ -247,12 +247,12 @@ ORDER BY r.persona, r.code, p.code
 `
 
 type ListRolesWithPermissionsRow struct {
-	RoleID         int64
-	RoleCode       string
-	RoleName       string
-	RolePersona    UserRole
-	RoleIsSystem   bool
-	PermissionCode pgtype.Text
+	RoleID         int64       `json:"role_id"`
+	RoleCode       string      `json:"role_code"`
+	RoleName       string      `json:"role_name"`
+	RolePersona    UserRole    `json:"role_persona"`
+	RoleIsSystem   bool        `json:"role_is_system"`
+	PermissionCode pgtype.Text `json:"permission_code"`
 }
 
 func (q *Queries) ListRolesWithPermissions(ctx context.Context) ([]ListRolesWithPermissionsRow, error) {
@@ -306,8 +306,8 @@ RETURNING id, code, name, persona, is_system, created_at, updated_at, deleted_at
 `
 
 type UpdateRoleNameParams struct {
-	ID   int64
-	Name string
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
 }
 
 func (q *Queries) UpdateRoleName(ctx context.Context, arg UpdateRoleNameParams) (Role, error) {

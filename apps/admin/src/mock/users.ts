@@ -112,7 +112,7 @@ const seed = (): AdminUserRecord[] => {
   return list;
 };
 
-const store: AdminUserRecord[] = seed();
+const store: AdminUserRecord[] = [];
 
 const nextId = (): string => {
   const maxNum = store.reduce((acc, u) => {

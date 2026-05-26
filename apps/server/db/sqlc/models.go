@@ -34,8 +34,8 @@ func (e *AuthProvider) Scan(src interface{}) error {
 }
 
 type NullAuthProvider struct {
-	AuthProvider AuthProvider
-	Valid        bool // Valid is true if AuthProvider is not NULL
+	AuthProvider AuthProvider `json:"auth_provider"`
+	Valid        bool         `json:"valid"` // Valid is true if AuthProvider is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -78,8 +78,8 @@ func (e *DeliveryStatus) Scan(src interface{}) error {
 }
 
 type NullDeliveryStatus struct {
-	DeliveryStatus DeliveryStatus
-	Valid          bool // Valid is true if DeliveryStatus is not NULL
+	DeliveryStatus DeliveryStatus `json:"delivery_status"`
+	Valid          bool           `json:"valid"` // Valid is true if DeliveryStatus is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -120,8 +120,8 @@ func (e *FavoriteTargetType) Scan(src interface{}) error {
 }
 
 type NullFavoriteTargetType struct {
-	FavoriteTargetType FavoriteTargetType
-	Valid              bool // Valid is true if FavoriteTargetType is not NULL
+	FavoriteTargetType FavoriteTargetType `json:"favorite_target_type"`
+	Valid              bool               `json:"valid"` // Valid is true if FavoriteTargetType is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -164,8 +164,8 @@ func (e *NotificationChannel) Scan(src interface{}) error {
 }
 
 type NullNotificationChannel struct {
-	NotificationChannel NotificationChannel
-	Valid               bool // Valid is true if NotificationChannel is not NULL
+	NotificationChannel NotificationChannel `json:"notification_channel"`
+	Valid               bool                `json:"valid"` // Valid is true if NotificationChannel is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -209,8 +209,8 @@ func (e *NotificationType) Scan(src interface{}) error {
 }
 
 type NullNotificationType struct {
-	NotificationType NotificationType
-	Valid            bool // Valid is true if NotificationType is not NULL
+	NotificationType NotificationType `json:"notification_type"`
+	Valid            bool             `json:"valid"` // Valid is true if NotificationType is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -256,8 +256,8 @@ func (e *OrderStatus) Scan(src interface{}) error {
 }
 
 type NullOrderStatus struct {
-	OrderStatus OrderStatus
-	Valid       bool // Valid is true if OrderStatus is not NULL
+	OrderStatus OrderStatus `json:"order_status"`
+	Valid       bool        `json:"valid"` // Valid is true if OrderStatus is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -301,8 +301,8 @@ func (e *PaymentProvider) Scan(src interface{}) error {
 }
 
 type NullPaymentProvider struct {
-	PaymentProvider PaymentProvider
-	Valid           bool // Valid is true if PaymentProvider is not NULL
+	PaymentProvider PaymentProvider `json:"payment_provider"`
+	Valid           bool            `json:"valid"` // Valid is true if PaymentProvider is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -348,8 +348,8 @@ func (e *PaymentStatus) Scan(src interface{}) error {
 }
 
 type NullPaymentStatus struct {
-	PaymentStatus PaymentStatus
-	Valid         bool // Valid is true if PaymentStatus is not NULL
+	PaymentStatus PaymentStatus `json:"payment_status"`
+	Valid         bool          `json:"valid"` // Valid is true if PaymentStatus is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -393,8 +393,8 @@ func (e *PayoutStatus) Scan(src interface{}) error {
 }
 
 type NullPayoutStatus struct {
-	PayoutStatus PayoutStatus
-	Valid        bool // Valid is true if PayoutStatus is not NULL
+	PayoutStatus PayoutStatus `json:"payout_status"`
+	Valid        bool         `json:"valid"` // Valid is true if PayoutStatus is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -437,8 +437,8 @@ func (e *PromotionStatus) Scan(src interface{}) error {
 }
 
 type NullPromotionStatus struct {
-	PromotionStatus PromotionStatus
-	Valid           bool // Valid is true if PromotionStatus is not NULL
+	PromotionStatus PromotionStatus `json:"promotion_status"`
+	Valid           bool            `json:"valid"` // Valid is true if PromotionStatus is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -481,8 +481,8 @@ func (e *PromotionType) Scan(src interface{}) error {
 }
 
 type NullPromotionType struct {
-	PromotionType PromotionType
-	Valid         bool // Valid is true if PromotionType is not NULL
+	PromotionType PromotionType `json:"promotion_type"`
+	Valid         bool          `json:"valid"` // Valid is true if PromotionType is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -526,8 +526,8 @@ func (e *RefundStatus) Scan(src interface{}) error {
 }
 
 type NullRefundStatus struct {
-	RefundStatus RefundStatus
-	Valid        bool // Valid is true if RefundStatus is not NULL
+	RefundStatus RefundStatus `json:"refund_status"`
+	Valid        bool         `json:"valid"` // Valid is true if RefundStatus is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -569,8 +569,8 @@ func (e *ReviewTargetType) Scan(src interface{}) error {
 }
 
 type NullReviewTargetType struct {
-	ReviewTargetType ReviewTargetType
-	Valid            bool // Valid is true if ReviewTargetType is not NULL
+	ReviewTargetType ReviewTargetType `json:"review_target_type"`
+	Valid            bool             `json:"valid"` // Valid is true if ReviewTargetType is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -612,8 +612,8 @@ func (e *RiderOnlineStatus) Scan(src interface{}) error {
 }
 
 type NullRiderOnlineStatus struct {
-	RiderOnlineStatus RiderOnlineStatus
-	Valid             bool // Valid is true if RiderOnlineStatus is not NULL
+	RiderOnlineStatus RiderOnlineStatus `json:"rider_online_status"`
+	Valid             bool              `json:"valid"` // Valid is true if RiderOnlineStatus is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -657,8 +657,8 @@ func (e *RiderVehicleType) Scan(src interface{}) error {
 }
 
 type NullRiderVehicleType struct {
-	RiderVehicleType RiderVehicleType
-	Valid            bool // Valid is true if RiderVehicleType is not NULL
+	RiderVehicleType RiderVehicleType `json:"rider_vehicle_type"`
+	Valid            bool             `json:"valid"` // Valid is true if RiderVehicleType is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -701,8 +701,8 @@ func (e *UserRole) Scan(src interface{}) error {
 }
 
 type NullUserRole struct {
-	UserRole UserRole
-	Valid    bool // Valid is true if UserRole is not NULL
+	UserRole UserRole `json:"user_role"`
+	Valid    bool     `json:"valid"` // Valid is true if UserRole is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -746,8 +746,8 @@ func (e *WebhookEventStatus) Scan(src interface{}) error {
 }
 
 type NullWebhookEventStatus struct {
-	WebhookEventStatus WebhookEventStatus
-	Valid              bool // Valid is true if WebhookEventStatus is not NULL
+	WebhookEventStatus WebhookEventStatus `json:"webhook_event_status"`
+	Valid              bool               `json:"valid"` // Valid is true if WebhookEventStatus is not NULL
 }
 
 // Scan implements the Scanner interface.
@@ -769,497 +769,497 @@ func (ns NullWebhookEventStatus) Value() (driver.Value, error) {
 }
 
 type Address struct {
-	ID           int64
-	UserID       int64
-	Label        pgtype.Text
-	AddressLine1 string
-	AddressLine2 pgtype.Text
-	City         string
-	Postcode     string
-	Lat          pgtype.Numeric
-	Lng          pgtype.Numeric
-	IsDefault    bool
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
-	DeletedAt    pgtype.Timestamptz
+	ID           int64              `json:"id"`
+	UserID       int64              `json:"user_id"`
+	Label        pgtype.Text        `json:"label"`
+	AddressLine1 string             `json:"address_line_1"`
+	AddressLine2 pgtype.Text        `json:"address_line_2"`
+	City         string             `json:"city"`
+	Postcode     string             `json:"postcode"`
+	Lat          pgtype.Numeric     `json:"lat"`
+	Lng          pgtype.Numeric     `json:"lng"`
+	IsDefault    bool               `json:"is_default"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt    pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type AuditLog struct {
-	ID           int64
-	ActorID      pgtype.Int8
-	ActorRole    NullUserRole
-	Action       string
-	ResourceType string
-	ResourceID   pgtype.Int8
-	IpAddress    *netip.Addr
-	UserAgent    pgtype.Text
-	MetaData     []byte
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
-	DeletedAt    pgtype.Timestamptz
+	ID           int64              `json:"id"`
+	ActorID      pgtype.Int8        `json:"actor_id"`
+	ActorRole    NullUserRole       `json:"actor_role"`
+	Action       string             `json:"action"`
+	ResourceType string             `json:"resource_type"`
+	ResourceID   pgtype.Int8        `json:"resource_id"`
+	IpAddress    *netip.Addr        `json:"ip_address"`
+	UserAgent    pgtype.Text        `json:"user_agent"`
+	MetaData     []byte             `json:"meta_data"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt    pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type AuthCredential struct {
-	ID             int64
-	UserID         int64
-	Provider       AuthProvider
-	ProviderUserID pgtype.Text
-	PasswordHash   pgtype.Text
-	LastLoginAt    pgtype.Timestamptz
-	CreatedAt      pgtype.Timestamptz
-	UpdatedAt      pgtype.Timestamptz
-	DeletedAt      pgtype.Timestamptz
+	ID             int64              `json:"id"`
+	UserID         int64              `json:"user_id"`
+	Provider       AuthProvider       `json:"provider"`
+	ProviderUserID pgtype.Text        `json:"provider_user_id"`
+	PasswordHash   pgtype.Text        `json:"password_hash"`
+	LastLoginAt    pgtype.Timestamptz `json:"last_login_at"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt      pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt      pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type Cart struct {
-	ID           int64
-	UserID       int64
-	RestaurantID pgtype.Int8
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
-	DeletedAt    pgtype.Timestamptz
+	ID           int64              `json:"id"`
+	UserID       int64              `json:"user_id"`
+	RestaurantID pgtype.Int8        `json:"restaurant_id"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt    pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type CartItem struct {
-	ID         int64
-	CartID     int64
-	MenuItemID int64
-	Quantity   int32
-	Note       pgtype.Text
-	CreatedAt  pgtype.Timestamptz
-	UpdatedAt  pgtype.Timestamptz
-	DeletedAt  pgtype.Timestamptz
+	ID         int64              `json:"id"`
+	CartID     int64              `json:"cart_id"`
+	MenuItemID int64              `json:"menu_item_id"`
+	Quantity   int32              `json:"quantity"`
+	Note       pgtype.Text        `json:"note"`
+	CreatedAt  pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt  pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt  pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type Delivery struct {
-	ID          int64
-	OrderID     int64
-	RiderID     pgtype.Int8
-	Status      DeliveryStatus
-	PickedUpAt  pgtype.Timestamptz
-	DeliveredAt pgtype.Timestamptz
-	CreatedAt   pgtype.Timestamptz
-	UpdatedAt   pgtype.Timestamptz
-	DeletedAt   pgtype.Timestamptz
+	ID          int64              `json:"id"`
+	OrderID     int64              `json:"order_id"`
+	RiderID     pgtype.Int8        `json:"rider_id"`
+	Status      DeliveryStatus     `json:"status"`
+	PickedUpAt  pgtype.Timestamptz `json:"picked_up_at"`
+	DeliveredAt pgtype.Timestamptz `json:"delivered_at"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt   pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type DeliveryLocationEvent struct {
-	ID             int64
-	DeliveryID     int64
-	RiderID        int64
-	Lat            pgtype.Numeric
-	Lng            pgtype.Numeric
-	AccuracyMeters pgtype.Numeric
-	HeadingDegrees pgtype.Numeric
-	SpeedMps       pgtype.Numeric
-	RecordedAt     pgtype.Timestamptz
-	CreatedAt      pgtype.Timestamptz
-	UpdatedAt      pgtype.Timestamptz
-	DeletedAt      pgtype.Timestamptz
+	ID             int64              `json:"id"`
+	DeliveryID     int64              `json:"delivery_id"`
+	RiderID        int64              `json:"rider_id"`
+	Lat            pgtype.Numeric     `json:"lat"`
+	Lng            pgtype.Numeric     `json:"lng"`
+	AccuracyMeters pgtype.Numeric     `json:"accuracy_meters"`
+	HeadingDegrees pgtype.Numeric     `json:"heading_degrees"`
+	SpeedMps       pgtype.Numeric     `json:"speed_mps"`
+	RecordedAt     pgtype.Timestamptz `json:"recorded_at"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt      pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt      pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type Favorite struct {
-	ID         int64
-	UserID     int64
-	TargetType FavoriteTargetType
-	TargetID   int64
-	CreatedAt  pgtype.Timestamptz
-	UpdatedAt  pgtype.Timestamptz
-	DeletedAt  pgtype.Timestamptz
+	ID         int64              `json:"id"`
+	UserID     int64              `json:"user_id"`
+	TargetType FavoriteTargetType `json:"target_type"`
+	TargetID   int64              `json:"target_id"`
+	CreatedAt  pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt  pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt  pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type FeatureFlag struct {
-	ID             int64
-	Key            string
-	Description    pgtype.Text
-	IsEnabled      bool
-	RolloutPercent int16
-	Config         []byte
-	CreatedAt      pgtype.Timestamptz
-	UpdatedAt      pgtype.Timestamptz
-	DeletedAt      pgtype.Timestamptz
+	ID             int64              `json:"id"`
+	Key            string             `json:"key"`
+	Description    pgtype.Text        `json:"description"`
+	IsEnabled      bool               `json:"is_enabled"`
+	RolloutPercent int16              `json:"rollout_percent"`
+	Config         []byte             `json:"config"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt      pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt      pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type FeatureFlagOverride struct {
-	ID            int64
-	FeatureFlagID int64
-	UserID        int64
-	IsEnabled     bool
-	CreatedAt     pgtype.Timestamptz
-	UpdatedAt     pgtype.Timestamptz
-	DeletedAt     pgtype.Timestamptz
+	ID            int64              `json:"id"`
+	FeatureFlagID int64              `json:"feature_flag_id"`
+	UserID        int64              `json:"user_id"`
+	IsEnabled     bool               `json:"is_enabled"`
+	CreatedAt     pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt     pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt     pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type MenuCategory struct {
-	ID           int64
-	RestaurantID int64
-	Name         string
-	SortOrder    int32
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
-	DeletedAt    pgtype.Timestamptz
+	ID           int64              `json:"id"`
+	RestaurantID int64              `json:"restaurant_id"`
+	Name         string             `json:"name"`
+	SortOrder    int32              `json:"sort_order"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt    pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type MenuItem struct {
-	ID           int64
-	RestaurantID int64
-	CategoryID   pgtype.Int8
-	Name         string
-	Description  pgtype.Text
-	ImageUrl     pgtype.Text
-	PriceAmount  int64
-	IsAvailable  bool
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
-	DeletedAt    pgtype.Timestamptz
+	ID           int64              `json:"id"`
+	RestaurantID int64              `json:"restaurant_id"`
+	CategoryID   pgtype.Int8        `json:"category_id"`
+	Name         string             `json:"name"`
+	Description  pgtype.Text        `json:"description"`
+	ImageUrl     pgtype.Text        `json:"image_url"`
+	PriceAmount  int64              `json:"price_amount"`
+	IsAvailable  bool               `json:"is_available"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt    pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type MenuItemOption struct {
-	ID         int64
-	MenuItemID int64
-	Name       string
-	IsRequired bool
-	MinSelect  int32
-	MaxSelect  int32
-	SortOrder  int32
-	CreatedAt  pgtype.Timestamptz
-	UpdatedAt  pgtype.Timestamptz
-	DeletedAt  pgtype.Timestamptz
+	ID         int64              `json:"id"`
+	MenuItemID int64              `json:"menu_item_id"`
+	Name       string             `json:"name"`
+	IsRequired bool               `json:"is_required"`
+	MinSelect  int32              `json:"min_select"`
+	MaxSelect  int32              `json:"max_select"`
+	SortOrder  int32              `json:"sort_order"`
+	CreatedAt  pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt  pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt  pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type MenuItemOptionValue struct {
-	ID          int64
-	OptionID    int64
-	Name        string
-	PriceAmount int64
-	SortOrder   int32
-	IsDefault   bool
-	IsAvailable bool
-	CreatedAt   pgtype.Timestamptz
-	UpdatedAt   pgtype.Timestamptz
-	DeletedAt   pgtype.Timestamptz
+	ID          int64              `json:"id"`
+	OptionID    int64              `json:"option_id"`
+	Name        string             `json:"name"`
+	PriceAmount int64              `json:"price_amount"`
+	SortOrder   int32              `json:"sort_order"`
+	IsDefault   bool               `json:"is_default"`
+	IsAvailable bool               `json:"is_available"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt   pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type Notification struct {
-	ID        int64
-	UserID    int64
-	Channel   NotificationChannel
-	Type      NotificationType
-	Title     string
-	Body      string
-	MetaData  []byte
-	ReadAt    pgtype.Timestamptz
-	SentAt    pgtype.Timestamptz
-	CreatedAt pgtype.Timestamptz
-	UpdatedAt pgtype.Timestamptz
-	DeletedAt pgtype.Timestamptz
+	ID        int64               `json:"id"`
+	UserID    int64               `json:"user_id"`
+	Channel   NotificationChannel `json:"channel"`
+	Type      NotificationType    `json:"type"`
+	Title     string              `json:"title"`
+	Body      string              `json:"body"`
+	MetaData  []byte              `json:"meta_data"`
+	ReadAt    pgtype.Timestamptz  `json:"read_at"`
+	SentAt    pgtype.Timestamptz  `json:"sent_at"`
+	CreatedAt pgtype.Timestamptz  `json:"created_at"`
+	UpdatedAt pgtype.Timestamptz  `json:"updated_at"`
+	DeletedAt pgtype.Timestamptz  `json:"deleted_at"`
 }
 
 type Order struct {
-	ID                int64
-	CustomerID        int64
-	RestaurantID      int64
-	AddressID         pgtype.Int8
-	Status            OrderStatus
-	SubtotalAmount    int64
-	DeliveryFeeAmount int64
-	TotalAmount       int64
-	Note              pgtype.Text
-	CreatedAt         pgtype.Timestamptz
-	UpdatedAt         pgtype.Timestamptz
-	DeletedAt         pgtype.Timestamptz
+	ID                int64              `json:"id"`
+	CustomerID        int64              `json:"customer_id"`
+	RestaurantID      int64              `json:"restaurant_id"`
+	AddressID         pgtype.Int8        `json:"address_id"`
+	Status            OrderStatus        `json:"status"`
+	SubtotalAmount    int64              `json:"subtotal_amount"`
+	DeliveryFeeAmount int64              `json:"delivery_fee_amount"`
+	TotalAmount       int64              `json:"total_amount"`
+	Note              pgtype.Text        `json:"note"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt         pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt         pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type OrderItem struct {
-	ID          int64
-	OrderID     int64
-	MenuItemID  int64
-	Name        string
-	PriceAmount int64
-	Quantity    int32
-	CreatedAt   pgtype.Timestamptz
-	UpdatedAt   pgtype.Timestamptz
-	DeletedAt   pgtype.Timestamptz
+	ID          int64              `json:"id"`
+	OrderID     int64              `json:"order_id"`
+	MenuItemID  int64              `json:"menu_item_id"`
+	Name        string             `json:"name"`
+	PriceAmount int64              `json:"price_amount"`
+	Quantity    int32              `json:"quantity"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt   pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type OrderItemOption struct {
-	ID              int64
-	OrderItemID     int64
-	OptionID        pgtype.Int8
-	OptionValueID   pgtype.Int8
-	OptionName      string
-	OptionValueName string
-	PriceAmount     int64
-	CreatedAt       pgtype.Timestamptz
-	UpdatedAt       pgtype.Timestamptz
-	DeletedAt       pgtype.Timestamptz
+	ID              int64              `json:"id"`
+	OrderItemID     int64              `json:"order_item_id"`
+	OptionID        pgtype.Int8        `json:"option_id"`
+	OptionValueID   pgtype.Int8        `json:"option_value_id"`
+	OptionName      string             `json:"option_name"`
+	OptionValueName string             `json:"option_value_name"`
+	PriceAmount     int64              `json:"price_amount"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt       pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type OrderStatusEvent struct {
-	ID          int64
-	OrderID     int64
-	FromStatus  NullOrderStatus
-	ToStatus    OrderStatus
-	ChangedByID pgtype.Int8
-	Reason      pgtype.Text
-	CreatedAt   pgtype.Timestamptz
-	UpdatedAt   pgtype.Timestamptz
-	DeletedAt   pgtype.Timestamptz
+	ID          int64              `json:"id"`
+	OrderID     int64              `json:"order_id"`
+	FromStatus  NullOrderStatus    `json:"from_status"`
+	ToStatus    OrderStatus        `json:"to_status"`
+	ChangedByID pgtype.Int8        `json:"changed_by_id"`
+	Reason      pgtype.Text        `json:"reason"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt   pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type PageSchema struct {
-	ID             int64
-	Key            string
-	CurrentVersion int32
-	SchemaData     []byte
-	CreatedAt      pgtype.Timestamptz
-	UpdatedAt      pgtype.Timestamptz
-	DeletedAt      pgtype.Timestamptz
+	ID             int64              `json:"id"`
+	Key            string             `json:"key"`
+	CurrentVersion int32              `json:"current_version"`
+	SchemaData     []byte             `json:"schema_data"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt      pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt      pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type PageSchemaVersion struct {
-	ID           int64
-	PageSchemaID int64
-	Version      int32
-	SchemaData   []byte
-	Note         pgtype.Text
-	CreatorID    int64
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
-	DeletedAt    pgtype.Timestamptz
+	ID           int64              `json:"id"`
+	PageSchemaID int64              `json:"page_schema_id"`
+	Version      int32              `json:"version"`
+	SchemaData   []byte             `json:"schema_data"`
+	Note         pgtype.Text        `json:"note"`
+	CreatorID    int64              `json:"creator_id"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt    pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type Payment struct {
-	ID                int64
-	OrderID           int64
-	UserID            int64
-	Provider          PaymentProvider
-	ProviderPaymentID pgtype.Text
-	Status            PaymentStatus
-	Amount            int64
-	Currency          string
-	FailureReason     pgtype.Text
-	PaidAt            pgtype.Timestamptz
-	MetaData          []byte
-	CreatedAt         pgtype.Timestamptz
-	UpdatedAt         pgtype.Timestamptz
-	DeletedAt         pgtype.Timestamptz
+	ID                int64              `json:"id"`
+	OrderID           int64              `json:"order_id"`
+	UserID            int64              `json:"user_id"`
+	Provider          PaymentProvider    `json:"provider"`
+	ProviderPaymentID pgtype.Text        `json:"provider_payment_id"`
+	Status            PaymentStatus      `json:"status"`
+	Amount            int64              `json:"amount"`
+	Currency          string             `json:"currency"`
+	FailureReason     pgtype.Text        `json:"failure_reason"`
+	PaidAt            pgtype.Timestamptz `json:"paid_at"`
+	MetaData          []byte             `json:"meta_data"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt         pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt         pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type PaymentRefund struct {
-	ID               int64
-	PaymentID        int64
-	ProviderRefundID pgtype.Text
-	Status           RefundStatus
-	Amount           int64
-	Reason           pgtype.Text
-	RefundedAt       pgtype.Timestamptz
-	MetaData         []byte
-	CreatedAt        pgtype.Timestamptz
-	UpdatedAt        pgtype.Timestamptz
-	DeletedAt        pgtype.Timestamptz
+	ID               int64              `json:"id"`
+	PaymentID        int64              `json:"payment_id"`
+	ProviderRefundID pgtype.Text        `json:"provider_refund_id"`
+	Status           RefundStatus       `json:"status"`
+	Amount           int64              `json:"amount"`
+	Reason           pgtype.Text        `json:"reason"`
+	RefundedAt       pgtype.Timestamptz `json:"refunded_at"`
+	MetaData         []byte             `json:"meta_data"`
+	CreatedAt        pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt        pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt        pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type Permission struct {
-	ID          int64
-	Code        string
-	Description pgtype.Text
-	CreatedAt   pgtype.Timestamptz
-	UpdatedAt   pgtype.Timestamptz
-	DeletedAt   pgtype.Timestamptz
+	ID          int64              `json:"id"`
+	Code        string             `json:"code"`
+	Description pgtype.Text        `json:"description"`
+	CreatedAt   pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt   pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type Promotion struct {
-	ID                int64
-	Code              string
-	Name              string
-	Description       pgtype.Text
-	Type              PromotionType
-	Status            PromotionStatus
-	PercentOff        pgtype.Int2
-	AmountOff         pgtype.Int8
-	MinOrderAmount    int64
-	MaxDiscountAmount pgtype.Int8
-	UsageLimit        pgtype.Int4
-	PerUserLimit      pgtype.Int4
-	RedemptionCount   int32
-	StartsAt          pgtype.Timestamptz
-	EndsAt            pgtype.Timestamptz
-	RestaurantID      pgtype.Int8
-	CreatedAt         pgtype.Timestamptz
-	UpdatedAt         pgtype.Timestamptz
-	DeletedAt         pgtype.Timestamptz
+	ID                int64              `json:"id"`
+	Code              string             `json:"code"`
+	Name              string             `json:"name"`
+	Description       pgtype.Text        `json:"description"`
+	Type              PromotionType      `json:"type"`
+	Status            PromotionStatus    `json:"status"`
+	PercentOff        pgtype.Int2        `json:"percent_off"`
+	AmountOff         pgtype.Int8        `json:"amount_off"`
+	MinOrderAmount    int64              `json:"min_order_amount"`
+	MaxDiscountAmount pgtype.Int8        `json:"max_discount_amount"`
+	UsageLimit        pgtype.Int4        `json:"usage_limit"`
+	PerUserLimit      pgtype.Int4        `json:"per_user_limit"`
+	RedemptionCount   int32              `json:"redemption_count"`
+	StartsAt          pgtype.Timestamptz `json:"starts_at"`
+	EndsAt            pgtype.Timestamptz `json:"ends_at"`
+	RestaurantID      pgtype.Int8        `json:"restaurant_id"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt         pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt         pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type PromotionRedemption struct {
-	ID             int64
-	PromotionID    int64
-	UserID         int64
-	OrderID        int64
-	DiscountAmount int64
-	RedeemedAt     pgtype.Timestamptz
-	CreatedAt      pgtype.Timestamptz
-	UpdatedAt      pgtype.Timestamptz
-	DeletedAt      pgtype.Timestamptz
+	ID             int64              `json:"id"`
+	PromotionID    int64              `json:"promotion_id"`
+	UserID         int64              `json:"user_id"`
+	OrderID        int64              `json:"order_id"`
+	DiscountAmount int64              `json:"discount_amount"`
+	RedeemedAt     pgtype.Timestamptz `json:"redeemed_at"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt      pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt      pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type Restaurant struct {
-	ID           int64
-	OwnerID      int64
-	Name         string
-	Description  pgtype.Text
-	ImageUrl     pgtype.Text
-	AddressLine1 string
-	City         string
-	Postcode     string
-	Lat          pgtype.Numeric
-	Lng          pgtype.Numeric
-	Phone        pgtype.Text
-	IsOpen       bool
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
-	DeletedAt    pgtype.Timestamptz
+	ID           int64              `json:"id"`
+	OwnerID      int64              `json:"owner_id"`
+	Name         string             `json:"name"`
+	Description  pgtype.Text        `json:"description"`
+	ImageUrl     pgtype.Text        `json:"image_url"`
+	AddressLine1 string             `json:"address_line_1"`
+	City         string             `json:"city"`
+	Postcode     string             `json:"postcode"`
+	Lat          pgtype.Numeric     `json:"lat"`
+	Lng          pgtype.Numeric     `json:"lng"`
+	Phone        pgtype.Text        `json:"phone"`
+	IsOpen       bool               `json:"is_open"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt    pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type RestaurantOperatingHour struct {
-	ID           int64
-	RestaurantID int64
-	DayOfWeek    int16
-	OpenTime     pgtype.Time
-	CloseTime    pgtype.Time
-	IsClosed     bool
-	CreatedAt    pgtype.Timestamptz
-	UpdatedAt    pgtype.Timestamptz
-	DeletedAt    pgtype.Timestamptz
+	ID           int64              `json:"id"`
+	RestaurantID int64              `json:"restaurant_id"`
+	DayOfWeek    int16              `json:"day_of_week"`
+	OpenTime     pgtype.Time        `json:"open_time"`
+	CloseTime    pgtype.Time        `json:"close_time"`
+	IsClosed     bool               `json:"is_closed"`
+	CreatedAt    pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt    pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type RestaurantPayout struct {
-	ID                int64
-	RestaurantID      int64
-	PeriodStartDate   pgtype.Date
-	PeriodEndDate     pgtype.Date
-	GrossAmount       int64
-	PlatformFeeAmount int64
-	AdjustmentAmount  int64
-	NetAmount         int64
-	Currency          string
-	Status            PayoutStatus
-	PaidAt            pgtype.Timestamptz
-	Reference         pgtype.Text
-	CreatedAt         pgtype.Timestamptz
-	UpdatedAt         pgtype.Timestamptz
-	DeletedAt         pgtype.Timestamptz
+	ID                int64              `json:"id"`
+	RestaurantID      int64              `json:"restaurant_id"`
+	PeriodStartDate   pgtype.Date        `json:"period_start_date"`
+	PeriodEndDate     pgtype.Date        `json:"period_end_date"`
+	GrossAmount       int64              `json:"gross_amount"`
+	PlatformFeeAmount int64              `json:"platform_fee_amount"`
+	AdjustmentAmount  int64              `json:"adjustment_amount"`
+	NetAmount         int64              `json:"net_amount"`
+	Currency          string             `json:"currency"`
+	Status            PayoutStatus       `json:"status"`
+	PaidAt            pgtype.Timestamptz `json:"paid_at"`
+	Reference         pgtype.Text        `json:"reference"`
+	CreatedAt         pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt         pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt         pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type Review struct {
-	ID         int64
-	OrderID    int64
-	AuthorID   int64
-	TargetType ReviewTargetType
-	TargetID   int64
-	Rating     int16
-	Comment    pgtype.Text
-	CreatedAt  pgtype.Timestamptz
-	UpdatedAt  pgtype.Timestamptz
-	DeletedAt  pgtype.Timestamptz
+	ID         int64              `json:"id"`
+	OrderID    int64              `json:"order_id"`
+	AuthorID   int64              `json:"author_id"`
+	TargetType ReviewTargetType   `json:"target_type"`
+	TargetID   int64              `json:"target_id"`
+	Rating     int16              `json:"rating"`
+	Comment    pgtype.Text        `json:"comment"`
+	CreatedAt  pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt  pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt  pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type RiderProfile struct {
-	ID                  int64
-	UserID              int64
-	VehicleType         RiderVehicleType
-	VehiclePlate        pgtype.Text
-	LicenseNumber       pgtype.Text
-	LicenseExpiresAt    pgtype.Timestamptz
-	IsVerified          bool
-	OnlineStatus        RiderOnlineStatus
-	CurrentLat          pgtype.Numeric
-	CurrentLng          pgtype.Numeric
-	LocationUpdatedAt   pgtype.Timestamptz
-	RatingAverage       pgtype.Numeric
-	RatingCount         int32
-	CompletedDeliveries int32
-	CreatedAt           pgtype.Timestamptz
-	UpdatedAt           pgtype.Timestamptz
-	DeletedAt           pgtype.Timestamptz
+	ID                  int64              `json:"id"`
+	UserID              int64              `json:"user_id"`
+	VehicleType         RiderVehicleType   `json:"vehicle_type"`
+	VehiclePlate        pgtype.Text        `json:"vehicle_plate"`
+	LicenseNumber       pgtype.Text        `json:"license_number"`
+	LicenseExpiresAt    pgtype.Timestamptz `json:"license_expires_at"`
+	IsVerified          bool               `json:"is_verified"`
+	OnlineStatus        RiderOnlineStatus  `json:"online_status"`
+	CurrentLat          pgtype.Numeric     `json:"current_lat"`
+	CurrentLng          pgtype.Numeric     `json:"current_lng"`
+	LocationUpdatedAt   pgtype.Timestamptz `json:"location_updated_at"`
+	RatingAverage       pgtype.Numeric     `json:"rating_average"`
+	RatingCount         int32              `json:"rating_count"`
+	CompletedDeliveries int32              `json:"completed_deliveries"`
+	CreatedAt           pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt           pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt           pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type Role struct {
-	ID        int64
-	Code      string
-	Name      string
-	Persona   UserRole
-	IsSystem  bool
-	CreatedAt pgtype.Timestamptz
-	UpdatedAt pgtype.Timestamptz
-	DeletedAt pgtype.Timestamptz
+	ID        int64              `json:"id"`
+	Code      string             `json:"code"`
+	Name      string             `json:"name"`
+	Persona   UserRole           `json:"persona"`
+	IsSystem  bool               `json:"is_system"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type RolePermission struct {
-	RoleID       int64
-	PermissionID int64
-	GrantedAt    pgtype.Timestamptz
+	RoleID       int64              `json:"role_id"`
+	PermissionID int64              `json:"permission_id"`
+	GrantedAt    pgtype.Timestamptz `json:"granted_at"`
 }
 
 type Session struct {
-	ID               int64
-	UserID           int64
-	RefreshTokenHash string
-	UserAgent        pgtype.Text
-	IpAddress        *netip.Addr
-	DeviceID         pgtype.Text
-	ExpiresAt        pgtype.Timestamptz
-	RevokedAt        pgtype.Timestamptz
-	LastUsedAt       pgtype.Timestamptz
-	CreatedAt        pgtype.Timestamptz
-	UpdatedAt        pgtype.Timestamptz
-	DeletedAt        pgtype.Timestamptz
+	ID               int64              `json:"id"`
+	UserID           int64              `json:"user_id"`
+	RefreshTokenHash string             `json:"refresh_token_hash"`
+	UserAgent        pgtype.Text        `json:"user_agent"`
+	IpAddress        *netip.Addr        `json:"ip_address"`
+	DeviceID         pgtype.Text        `json:"device_id"`
+	ExpiresAt        pgtype.Timestamptz `json:"expires_at"`
+	RevokedAt        pgtype.Timestamptz `json:"revoked_at"`
+	LastUsedAt       pgtype.Timestamptz `json:"last_used_at"`
+	CreatedAt        pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt        pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt        pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type User struct {
-	ID        int64
-	Name      string
-	Email     string
-	Phone     pgtype.Text
-	Role      UserRole
-	CreatedAt pgtype.Timestamptz
-	UpdatedAt pgtype.Timestamptz
-	DeletedAt pgtype.Timestamptz
+	ID        int64              `json:"id"`
+	Name      string             `json:"name"`
+	Email     string             `json:"email"`
+	Phone     pgtype.Text        `json:"phone"`
+	Role      UserRole           `json:"role"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt pgtype.Timestamptz `json:"deleted_at"`
 }
 
 type UserPermissionGrant struct {
-	UserID       int64
-	PermissionID int64
-	Effect       int16
-	Scope        []byte
-	Reason       pgtype.Text
-	GrantedBy    pgtype.Int8
-	GrantedAt    pgtype.Timestamptz
-	ExpiresAt    pgtype.Timestamptz
+	UserID       int64              `json:"user_id"`
+	PermissionID int64              `json:"permission_id"`
+	Effect       int16              `json:"effect"`
+	Scope        []byte             `json:"scope"`
+	Reason       pgtype.Text        `json:"reason"`
+	GrantedBy    pgtype.Int8        `json:"granted_by"`
+	GrantedAt    pgtype.Timestamptz `json:"granted_at"`
+	ExpiresAt    pgtype.Timestamptz `json:"expires_at"`
 }
 
 type UserRoleAssignment struct {
-	UserID    int64
-	RoleID    int64
-	GrantedBy pgtype.Int8
-	GrantedAt pgtype.Timestamptz
-	Scope     []byte
-	ExpiresAt pgtype.Timestamptz
+	UserID    int64              `json:"user_id"`
+	RoleID    int64              `json:"role_id"`
+	GrantedBy pgtype.Int8        `json:"granted_by"`
+	GrantedAt pgtype.Timestamptz `json:"granted_at"`
+	Scope     []byte             `json:"scope"`
+	ExpiresAt pgtype.Timestamptz `json:"expires_at"`
 }
 
 type WebhookEvent struct {
-	ID              int64
-	Provider        string
-	EventType       string
-	ProviderEventID string
-	Status          WebhookEventStatus
-	PayloadData     []byte
-	Signature       pgtype.Text
-	ErrorMessage    pgtype.Text
-	RetryCount      int32
-	ProcessedAt     pgtype.Timestamptz
-	ReceivedAt      pgtype.Timestamptz
-	CreatedAt       pgtype.Timestamptz
-	UpdatedAt       pgtype.Timestamptz
-	DeletedAt       pgtype.Timestamptz
+	ID              int64              `json:"id"`
+	Provider        string             `json:"provider"`
+	EventType       string             `json:"event_type"`
+	ProviderEventID string             `json:"provider_event_id"`
+	Status          WebhookEventStatus `json:"status"`
+	PayloadData     []byte             `json:"payload_data"`
+	Signature       pgtype.Text        `json:"signature"`
+	ErrorMessage    pgtype.Text        `json:"error_message"`
+	RetryCount      int32              `json:"retry_count"`
+	ProcessedAt     pgtype.Timestamptz `json:"processed_at"`
+	ReceivedAt      pgtype.Timestamptz `json:"received_at"`
+	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt       pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt       pgtype.Timestamptz `json:"deleted_at"`
 }

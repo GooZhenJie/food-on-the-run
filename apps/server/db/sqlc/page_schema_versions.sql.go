@@ -18,11 +18,11 @@ RETURNING id, page_schema_id, version, schema_data, note, creator_id, created_at
 `
 
 type CreatePageSchemaVersionParams struct {
-	PageSchemaID int64
-	Version      int32
-	SchemaData   []byte
-	Note         pgtype.Text
-	CreatorID    int64
+	PageSchemaID int64       `json:"page_schema_id"`
+	Version      int32       `json:"version"`
+	SchemaData   []byte      `json:"schema_data"`
+	Note         pgtype.Text `json:"note"`
+	CreatorID    int64       `json:"creator_id"`
 }
 
 func (q *Queries) CreatePageSchemaVersion(ctx context.Context, arg CreatePageSchemaVersionParams) (PageSchemaVersion, error) {
@@ -55,8 +55,8 @@ LIMIT 1
 `
 
 type GetPageSchemaVersionParams struct {
-	PageSchemaID int64
-	Version      int32
+	PageSchemaID int64 `json:"page_schema_id"`
+	Version      int32 `json:"version"`
 }
 
 func (q *Queries) GetPageSchemaVersion(ctx context.Context, arg GetPageSchemaVersionParams) (PageSchemaVersion, error) {

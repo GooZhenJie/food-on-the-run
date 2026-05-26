@@ -136,7 +136,7 @@ const seed = (): AdminRestaurantRecord[] => {
   });
 };
 
-const store: AdminRestaurantRecord[] = seed();
+const store: AdminRestaurantRecord[] = [];
 
 const nextId = (): string => {
   const maxNum = store.reduce((acc, r) => {

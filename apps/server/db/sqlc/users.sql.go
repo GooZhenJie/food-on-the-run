@@ -23,8 +23,8 @@ WHERE deleted_at IS NULL
 `
 
 type AdminCountUsersParams struct {
-	Role    NullUserRole
-	Keyword pgtype.Text
+	Role    NullUserRole `json:"role"`
+	Keyword pgtype.Text  `json:"keyword"`
 }
 
 func (q *Queries) AdminCountUsers(ctx context.Context, arg AdminCountUsersParams) (int64, error) {
@@ -48,10 +48,10 @@ LIMIT $1 OFFSET $2
 `
 
 type AdminListUsersParams struct {
-	Limit   int32
-	Offset  int32
-	Role    NullUserRole
-	Keyword pgtype.Text
+	Limit   int32        `json:"limit"`
+	Offset  int32        `json:"offset"`
+	Role    NullUserRole `json:"role"`
+	Keyword pgtype.Text  `json:"keyword"`
 }
 
 func (q *Queries) AdminListUsers(ctx context.Context, arg AdminListUsersParams) ([]User, error) {
@@ -96,8 +96,8 @@ RETURNING id, name, email, phone, role, created_at, updated_at, deleted_at
 `
 
 type AdminUpdateUserRoleParams struct {
-	ID   int64
-	Role UserRole
+	ID   int64    `json:"id"`
+	Role UserRole `json:"role"`
 }
 
 func (q *Queries) AdminUpdateUserRole(ctx context.Context, arg AdminUpdateUserRoleParams) (User, error) {
@@ -123,10 +123,10 @@ RETURNING id, name, email, phone, role, created_at, updated_at, deleted_at
 `
 
 type CreateUserParams struct {
-	Name  string
-	Email string
-	Phone pgtype.Text
-	Role  UserRole
+	Name  string      `json:"name"`
+	Email string      `json:"email"`
+	Phone pgtype.Text `json:"phone"`
+	Role  UserRole    `json:"role"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {

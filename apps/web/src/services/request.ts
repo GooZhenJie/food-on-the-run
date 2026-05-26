@@ -6,7 +6,7 @@ interface IRequestOptions extends RequestInit {
 }
 
 async function request<T>(path: string, options: IRequestOptions = {}): Promise<T> {
-  const { params, data, headers, ...init } = options;
+  const { params, data, headers: customHeaders, ...init } = options;
   let url = `${BASE_URL}${path}`;
 
   if (params) {
@@ -16,8 +16,19 @@ async function request<T>(path: string, options: IRequestOptions = {}): Promise<
     url += `?${qs.toString()}`;
   }
 
+  // Build headers with auth token
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(customHeaders as Record<string, string>),
+  };
+
+  const token = localStorage.getItem('__fotr_auth_token__');
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const res = await fetch(url, {
-    headers: { 'Content-Type': 'application/json', ...headers },
+    headers,
     body: data !== undefined ? JSON.stringify(data) : init.body,
     ...init,
   });

@@ -17,8 +17,8 @@ WHERE user_id = $1 AND permission_id = $2
 `
 
 type DeleteUserGrantParams struct {
-	UserID       int64
-	PermissionID int64
+	UserID       int64 `json:"user_id"`
+	PermissionID int64 `json:"permission_id"`
 }
 
 func (q *Queries) DeleteUserGrant(ctx context.Context, arg DeleteUserGrantParams) error {
@@ -44,20 +44,20 @@ LIMIT 1
 `
 
 type GetUserGrantParams struct {
-	UserID       int64
-	PermissionID int64
+	UserID       int64 `json:"user_id"`
+	PermissionID int64 `json:"permission_id"`
 }
 
 type GetUserGrantRow struct {
-	UserID         int64
-	PermissionID   int64
-	PermissionCode string
-	Effect         int16
-	Scope          []byte
-	Reason         pgtype.Text
-	GrantedBy      pgtype.Int8
-	GrantedAt      pgtype.Timestamptz
-	ExpiresAt      pgtype.Timestamptz
+	UserID         int64              `json:"user_id"`
+	PermissionID   int64              `json:"permission_id"`
+	PermissionCode string             `json:"permission_code"`
+	Effect         int16              `json:"effect"`
+	Scope          []byte             `json:"scope"`
+	Reason         pgtype.Text        `json:"reason"`
+	GrantedBy      pgtype.Int8        `json:"granted_by"`
+	GrantedAt      pgtype.Timestamptz `json:"granted_at"`
+	ExpiresAt      pgtype.Timestamptz `json:"expires_at"`
 }
 
 func (q *Queries) GetUserGrant(ctx context.Context, arg GetUserGrantParams) (GetUserGrantRow, error) {
@@ -96,15 +96,15 @@ ORDER BY p.code
 `
 
 type ListUserGrantsRow struct {
-	UserID         int64
-	PermissionID   int64
-	PermissionCode string
-	Effect         int16
-	Scope          []byte
-	Reason         pgtype.Text
-	GrantedBy      pgtype.Int8
-	GrantedAt      pgtype.Timestamptz
-	ExpiresAt      pgtype.Timestamptz
+	UserID         int64              `json:"user_id"`
+	PermissionID   int64              `json:"permission_id"`
+	PermissionCode string             `json:"permission_code"`
+	Effect         int16              `json:"effect"`
+	Scope          []byte             `json:"scope"`
+	Reason         pgtype.Text        `json:"reason"`
+	GrantedBy      pgtype.Int8        `json:"granted_by"`
+	GrantedAt      pgtype.Timestamptz `json:"granted_at"`
+	ExpiresAt      pgtype.Timestamptz `json:"expires_at"`
 }
 
 // Returns raw grant rows for a user (admin UI: show all including expired).
@@ -153,10 +153,10 @@ ORDER BY p.code
 `
 
 type ListUserGrantsForEvalRow struct {
-	PermissionCode string
-	Effect         int16
-	Scope          []byte
-	ExpiresAt      pgtype.Timestamptz
+	PermissionCode string             `json:"permission_code"`
+	Effect         int16              `json:"effect"`
+	Scope          []byte             `json:"scope"`
+	ExpiresAt      pgtype.Timestamptz `json:"expires_at"`
 }
 
 // Returns only non-expired grant rows for Actor evaluation.
@@ -200,13 +200,13 @@ SET effect     = EXCLUDED.effect,
 `
 
 type UpsertUserGrantParams struct {
-	UserID       int64
-	PermissionID int64
-	Effect       int16
-	Scope        []byte
-	Reason       pgtype.Text
-	GrantedBy    pgtype.Int8
-	ExpiresAt    pgtype.Timestamptz
+	UserID       int64              `json:"user_id"`
+	PermissionID int64              `json:"permission_id"`
+	Effect       int16              `json:"effect"`
+	Scope        []byte             `json:"scope"`
+	Reason       pgtype.Text        `json:"reason"`
+	GrantedBy    pgtype.Int8        `json:"granted_by"`
+	ExpiresAt    pgtype.Timestamptz `json:"expires_at"`
 }
 
 // Writes / updates a single (user_id, permission_id) grant.

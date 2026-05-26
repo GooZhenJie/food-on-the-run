@@ -1,29 +1,28 @@
 import request from './request';
-import type {
-  IBanner,
-  ICuisineShortcut,
-  IGetRestaurantListParams,
-  IRestaurant,
-} from './type';
 
-export async function getRestaurantList(
-  params?: IGetRestaurantListParams,
-): Promise<IRestaurant[]> {
-  const cleaned: Record<string, string | number> = {};
-  if (params) {
-    Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined && v !== '') cleaned[k] = v;
-    });
-  }
-  return request<IRestaurant[]>('/restaurants', {
-    params: Object.keys(cleaned).length ? cleaned : undefined,
-  });
+// Backend returns this shape from the restaurants table
+export interface IRestaurantRow {
+  id: number;
+  owner_id: number;
+  name: string;
+  description: string | null;
+  image_url: string | null;
+  address_line_1: string;
+  city: string;
+  postcode: string;
+  lat: string | null;
+  lng: string | null;
+  phone: string | null;
+  is_open: boolean;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
 }
 
-export async function getBannerList(): Promise<IBanner[]> {
-  return request<IBanner[]>('/banners');
+export async function getRestaurantList(): Promise<IRestaurantRow[]> {
+  return request<IRestaurantRow[]>('/public/restaurants');
 }
 
-export async function getCuisineList(): Promise<ICuisineShortcut[]> {
-  return request<ICuisineShortcut[]>('/cuisines');
+export async function getRestaurantById(id: string | number): Promise<IRestaurantRow> {
+  return request<IRestaurantRow>(`/public/restaurants/${id}`);
 }

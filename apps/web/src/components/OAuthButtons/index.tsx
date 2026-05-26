@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { App } from 'antd';
 import { GoogleOutlined, AppleFilled, FacebookFilled } from '@ant-design/icons';
 import { oauthLogin } from '@/services/auth';
-import { setAuth } from '@/utils/auth';
+import { useAuth } from '@/contexts/AuthContext';
 import type { IAuthResponse, TOAuthProvider } from '@/services/type';
 
 interface IOAuthButtonsProps {
@@ -42,12 +42,13 @@ export const OAuthButtons: React.FC<IOAuthButtonsProps> = ({
 }) => {
   const [loadingProvider, setLoadingProvider] = useState<TOAuthProvider | null>(null);
   const { message } = App.useApp();
+  const { login } = useAuth();
 
   const handleClick = async (provider: TOAuthProvider) => {
     setLoadingProvider(provider);
     try {
       const payload = await oauthLogin(provider, { id_token: 'mock_id_token' });
-      setAuth(payload);
+      login(payload);
       message.success(`Signed in with ${provider}`);
       onSuccess?.(payload);
     } catch (err) {

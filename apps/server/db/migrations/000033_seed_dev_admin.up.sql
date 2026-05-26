@@ -5,7 +5,7 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO auth_credentials (user_id, provider, password_hash)
-SELECT u.id, 'password'::auth_provider, '$2a$12$ufN53f9vT5hRVzElp6HeBuWwhpy/otzkXBlP6RZSErg6ZN60Gw5qm'
+SELECT u.id, 'password'::auth_provider, '$2a$10$NcOo8HAC/u.IuwNgntHYMefrsMbaYDGzNYg9S5Pwygst9L7cXhLF.'
 FROM users u
 WHERE u.email = 'admin@fotr.local'
   AND u.deleted_at IS NULL

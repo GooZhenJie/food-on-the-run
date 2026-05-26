@@ -114,7 +114,5 @@ export const SIGN_UP_PAGE_SCHEMA: ISchemaNode = {
         },
       },
     },
-    { name: 'AuthDivider', props: { text: 'or continue with' } },
-    { name: 'OAuthSection', props: { redirect: '/' } },
   ],
 };

@@ -1,28 +1,16 @@
 import { useEffect, useState } from 'react';
 import { App } from 'antd';
-import {
-  getBannerList,
-  getCuisineList,
-  getRestaurantList,
-} from '@/services/restaurants';
-import type {
-  IBanner,
-  ICuisineShortcut,
-  IRestaurant,
-} from '@/services/type';
+import { getRestaurantList } from '@/services/restaurants';
+import type { IRestaurantRow } from '@/services/restaurants';
 
 interface IHomeData {
-  restaurants: IRestaurant[];
-  banners: IBanner[];
-  cuisines: ICuisineShortcut[];
+  restaurants: IRestaurantRow[];
   loading: boolean;
   error: string | null;
 }
 
 export const useHomeData = (): IHomeData => {
-  const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
-  const [banners, setBanners] = useState<IBanner[]>([]);
-  const [cuisines, setCuisines] = useState<ICuisineShortcut[]>([]);
+  const [restaurants, setRestaurants] = useState<IRestaurantRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { message } = App.useApp();
@@ -34,18 +22,12 @@ export const useHomeData = (): IHomeData => {
       setLoading(true);
       setError(null);
       try {
-        const [rsp, bsp, csp] = await Promise.all([
-          getRestaurantList(),
-          getBannerList(),
-          getCuisineList(),
-        ]);
+        const data = await getRestaurantList();
         if (cancelled) return;
-        setRestaurants(rsp);
-        setBanners(bsp);
-        setCuisines(csp);
+        setRestaurants(data);
       } catch (e) {
         if (cancelled) return;
-        const msg = e instanceof Error ? e.message : 'Failed to load home data';
+        const msg = e instanceof Error ? e.message : 'Failed to load restaurants';
         setError(msg);
         message.error(msg);
       } finally {
@@ -59,5 +41,5 @@ export const useHomeData = (): IHomeData => {
     };
   }, [message]);
 
-  return { restaurants, banners, cuisines, loading, error };
+  return { restaurants, loading, error };
 };

@@ -149,7 +149,7 @@ const seed = (): AdminOrderRecord[] => {
   return list;
 };
 
-const store: AdminOrderRecord[] = seed();
+const store: AdminOrderRecord[] = [];
 
 const applyFilters = (
   items: AdminOrderRecord[],

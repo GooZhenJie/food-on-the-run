@@ -87,3 +87,78 @@ export interface ICuisineShortcut {
   icon: string;
   color: string;
 }
+
+/* ─── Menu ─── */
+
+export interface IMenuCategory {
+  id: string;
+  name: string;
+  sortOrder: number;
+}
+
+export interface IMenuItem {
+  id: string;
+  restaurantId: string;
+  categoryId: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  priceAmount: number; // cents (e.g. 1250 = RM 12.50)
+  isAvailable: boolean;
+  isPopular?: boolean;
+}
+
+export interface IMenuData {
+  categories: IMenuCategory[];
+  items: IMenuItem[];
+}
+
+/* ─── Cart ─── */
+
+export interface ICartItem {
+  menuItemId: string;
+  name: string;
+  imageUrl: string;
+  priceAmount: number;
+  quantity: number;
+  note?: string;
+}
+
+export interface ICart {
+  restaurantId: string;
+  restaurantName: string;
+  items: ICartItem[];
+}
+
+/* ─── Orders ─── */
+
+export type TOrderStatus =
+  | 'pending'
+  | 'confirmed'
+  | 'preparing'
+  | 'ready'
+  | 'picked_up'
+  | 'delivered'
+  | 'cancelled';
+
+export interface IOrderItem {
+  id: string;
+  name: string;
+  priceAmount: number;
+  quantity: number;
+}
+
+export interface IOrder {
+  id: string;
+  restaurantId: string;
+  restaurantName: string;
+  restaurantImage: string;
+  status: TOrderStatus;
+  subtotalAmount: number;
+  deliveryFeeAmount: number;
+  totalAmount: number;
+  note?: string;
+  items: IOrderItem[];
+  createdAt: string;
+  updatedAt: string;
+}

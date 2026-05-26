@@ -19,12 +19,12 @@ RETURNING id, user_id, refresh_token_hash, user_agent, ip_address, device_id, ex
 `
 
 type CreateSessionParams struct {
-	UserID           int64
-	RefreshTokenHash string
-	UserAgent        pgtype.Text
-	IpAddress        *netip.Addr
-	DeviceID         pgtype.Text
-	ExpiresAt        pgtype.Timestamptz
+	UserID           int64              `json:"user_id"`
+	RefreshTokenHash string             `json:"refresh_token_hash"`
+	UserAgent        pgtype.Text        `json:"user_agent"`
+	IpAddress        *netip.Addr        `json:"ip_address"`
+	DeviceID         pgtype.Text        `json:"device_id"`
+	ExpiresAt        pgtype.Timestamptz `json:"expires_at"`
 }
 
 func (q *Queries) CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error) {

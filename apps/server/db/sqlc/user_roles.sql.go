@@ -18,9 +18,9 @@ ON CONFLICT DO NOTHING
 `
 
 type AddUserRoleParams struct {
-	UserID    int64
-	RoleID    int64
-	GrantedBy pgtype.Int8
+	UserID    int64       `json:"user_id"`
+	RoleID    int64       `json:"role_id"`
+	GrantedBy pgtype.Int8 `json:"granted_by"`
 }
 
 func (q *Queries) AddUserRole(ctx context.Context, arg AddUserRoleParams) error {
@@ -47,9 +47,9 @@ ON CONFLICT DO NOTHING
 `
 
 type GrantDefaultRoleForPersonaParams struct {
-	UserID    int64
-	GrantedBy pgtype.Int8
-	Persona   string
+	UserID    int64       `json:"user_id"`
+	GrantedBy pgtype.Int8 `json:"granted_by"`
+	Persona   string      `json:"persona"`
 }
 
 // Grants the <persona>.default role to the user (no-op if already granted).
@@ -68,8 +68,8 @@ ORDER BY rp.role_id, p.code
 `
 
 type ListRolePermissionCodesByRoleIDsRow struct {
-	RoleID int64
-	Code   string
+	RoleID int64  `json:"role_id"`
+	Code   string `json:"code"`
 }
 
 // Returns (role_id, permission_code) pairs for a batch of role ids.
@@ -149,11 +149,11 @@ ORDER BY r.code
 `
 
 type ListUserRoleBindingsRow struct {
-	RoleID      int64
-	RoleCode    string
-	RolePersona UserRole
-	Scope       []byte
-	ExpiresAt   pgtype.Timestamptz
+	RoleID      int64              `json:"role_id"`
+	RoleCode    string             `json:"role_code"`
+	RolePersona UserRole           `json:"role_persona"`
+	Scope       []byte             `json:"scope"`
+	ExpiresAt   pgtype.Timestamptz `json:"expires_at"`
 }
 
 // Returns the full role binding (role + scope + expires_at) for a user,
@@ -270,11 +270,11 @@ SET scope      = EXCLUDED.scope,
 `
 
 type UpsertUserRoleBindingParams struct {
-	UserID    int64
-	RoleID    int64
-	GrantedBy pgtype.Int8
-	Scope     []byte
-	ExpiresAt pgtype.Timestamptz
+	UserID    int64              `json:"user_id"`
+	RoleID    int64              `json:"role_id"`
+	GrantedBy pgtype.Int8        `json:"granted_by"`
+	Scope     []byte             `json:"scope"`
+	ExpiresAt pgtype.Timestamptz `json:"expires_at"`
 }
 
 // Writes a (user_id, role_id) assignment with scope + expires_at.

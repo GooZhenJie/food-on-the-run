@@ -46,7 +46,12 @@ func main() {
 	roleHandler := handlers.NewRoleHandler(pool)
 	userGrantHandler := handlers.NewUserGrantHandler(pool)
 	merchantHandler := handlers.NewMerchantHandler(pool)
-	registerRoutes(mux, pool, authHandler, pageSchemaHandler, userHandler, roleHandler, userGrantHandler, merchantHandler)
+	menuHandler := handlers.NewMenuHandler(pool)
+	customerCartHandler := handlers.NewCustomerCartHandler(pool)
+	customerOrderHandler := handlers.NewCustomerOrderHandler(pool)
+	publicRestaurantHandler := handlers.NewPublicRestaurantHandler(pool)
+	dashboardHandler := handlers.NewDashboardHandler()
+	registerRoutes(mux, pool, authHandler, pageSchemaHandler, userHandler, roleHandler, userGrantHandler, merchantHandler, menuHandler, customerCartHandler, customerOrderHandler, publicRestaurantHandler, dashboardHandler)
 
 	handler := middleware.CORS(mux)
 
@@ -63,6 +68,11 @@ func registerRoutes(
 	rh *handlers.RoleHandler,
 	ugh *handlers.UserGrantHandler,
 	mh *handlers.MerchantHandler,
+	menuH *handlers.MenuHandler,
+	cartH *handlers.CustomerCartHandler,
+	orderH *handlers.CustomerOrderHandler,
+	prh *handlers.PublicRestaurantHandler,
+	dh *handlers.DashboardHandler,
 ) {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
@@ -72,12 +82,36 @@ func registerRoutes(
 		fmt.Fprintf(w, "Hello, Food on the Run!")
 	})
 
-	mux.HandleFunc("/api/auth/register", ah.Register)
-	mux.HandleFunc("/api/auth/login", ah.Login)
-	mux.HandleFunc("/api/auth/refresh", ah.Refresh)
-	mux.HandleFunc("/api/auth/logout", ah.Logout)
+	mux.HandleFunc("POST /api/auth/register", ah.Register)
+	mux.HandleFunc("POST /api/auth/login", ah.Login)
+	mux.HandleFunc("POST /api/auth/refresh", ah.Refresh)
+	mux.HandleFunc("POST /api/auth/logout", ah.Logout)
 
-	mux.HandleFunc("/api/public/schemas", ph.GetPublished)
+	mux.HandleFunc("GET /api/public/schemas", ph.GetPublished)
+	mux.HandleFunc("GET /api/public/restaurants", prh.List)
+	mux.HandleFunc("GET /api/public/restaurants/{id}", prh.GetByID)
+	mux.HandleFunc("GET /api/public/restaurants/{id}/menu", menuH.GetRestaurantMenu)
+
+	mux.HandleFunc("GET /api/dashboard/kpi", dh.KPI)
+	mux.HandleFunc("GET /api/dashboard/ops-kpi", dh.OpsKPI)
+	mux.HandleFunc("GET /api/dashboard/sales-trend", dh.SalesTrend)
+	mux.HandleFunc("GET /api/dashboard/category-radar", dh.CategoryRadar)
+	mux.HandleFunc("GET /api/dashboard/wordcloud", dh.Wordcloud)
+	mux.HandleFunc("GET /api/dashboard/geo", dh.Geo)
+	mux.HandleFunc("GET /api/dashboard/dps", dh.DPS)
+
+	// Customer endpoints — require auth.
+	customerMux := http.NewServeMux()
+	customerMux.HandleFunc("GET /api/customer/cart", cartH.GetCart)
+	customerMux.HandleFunc("POST /api/customer/cart/items", cartH.AddCartItem)
+	customerMux.HandleFunc("DELETE /api/customer/cart/items/{menu_item_id}", cartH.RemoveCartItem)
+	customerMux.HandleFunc("DELETE /api/customer/cart", cartH.ClearCart)
+	customerMux.HandleFunc("POST /api/customer/orders", orderH.CreateOrder)
+	customerMux.HandleFunc("GET /api/customer/orders", orderH.ListOrders)
+	customerMux.HandleFunc("GET /api/customer/orders/{id}", orderH.GetOrder)
+	customerMux.HandleFunc("POST /api/customer/orders/{id}/pay", orderH.PayOrder)
+
+	mux.Handle("/api/customer/", middleware.RequireAuth(customerMux))
 
 	adminMux := http.NewServeMux()
 

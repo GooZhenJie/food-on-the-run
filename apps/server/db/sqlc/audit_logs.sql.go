@@ -27,14 +27,14 @@ VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 `
 
 type WriteAuditLogParams struct {
-	ActorID      pgtype.Int8
-	ActorRole    NullUserRole
-	Action       string
-	ResourceType string
-	ResourceID   pgtype.Int8
-	IpAddress    *netip.Addr
-	UserAgent    pgtype.Text
-	MetaData     []byte
+	ActorID      pgtype.Int8  `json:"actor_id"`
+	ActorRole    NullUserRole `json:"actor_role"`
+	Action       string       `json:"action"`
+	ResourceType string       `json:"resource_type"`
+	ResourceID   pgtype.Int8  `json:"resource_id"`
+	IpAddress    *netip.Addr  `json:"ip_address"`
+	UserAgent    pgtype.Text  `json:"user_agent"`
+	MetaData     []byte       `json:"meta_data"`
 }
 
 func (q *Queries) WriteAuditLog(ctx context.Context, arg WriteAuditLogParams) error {

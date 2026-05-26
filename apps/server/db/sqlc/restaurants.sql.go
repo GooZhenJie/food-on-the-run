@@ -9,6 +9,34 @@ import (
 	"context"
 )
 
+const getPublicRestaurant = `-- name: GetPublicRestaurant :one
+SELECT id, owner_id, name, description, image_url, address_line_1, city, postcode, lat, lng, phone, is_open, created_at, updated_at, deleted_at FROM restaurants
+WHERE id = $1 AND deleted_at IS NULL
+`
+
+func (q *Queries) GetPublicRestaurant(ctx context.Context, id int64) (Restaurant, error) {
+	row := q.db.QueryRow(ctx, getPublicRestaurant, id)
+	var i Restaurant
+	err := row.Scan(
+		&i.ID,
+		&i.OwnerID,
+		&i.Name,
+		&i.Description,
+		&i.ImageUrl,
+		&i.AddressLine1,
+		&i.City,
+		&i.Postcode,
+		&i.Lat,
+		&i.Lng,
+		&i.Phone,
+		&i.IsOpen,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.DeletedAt,
+	)
+	return i, err
+}
+
 const getRestaurantByID = `-- name: GetRestaurantByID :one
 SELECT id, owner_id, name, description, image_url, address_line_1, city, postcode, lat, lng, phone, is_open, created_at, updated_at, deleted_at FROM restaurants
 WHERE id = $1 AND deleted_at IS NULL
@@ -35,6 +63,48 @@ func (q *Queries) GetRestaurantByID(ctx context.Context, id int64) (Restaurant, 
 		&i.DeletedAt,
 	)
 	return i, err
+}
+
+const listPublicRestaurants = `-- name: ListPublicRestaurants :many
+SELECT id, owner_id, name, description, image_url, address_line_1, city, postcode, lat, lng, phone, is_open, created_at, updated_at, deleted_at FROM restaurants
+WHERE is_open = true AND deleted_at IS NULL
+ORDER BY created_at DESC
+`
+
+func (q *Queries) ListPublicRestaurants(ctx context.Context) ([]Restaurant, error) {
+	rows, err := q.db.Query(ctx, listPublicRestaurants)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Restaurant
+	for rows.Next() {
+		var i Restaurant
+		if err := rows.Scan(
+			&i.ID,
+			&i.OwnerID,
+			&i.Name,
+			&i.Description,
+			&i.ImageUrl,
+			&i.AddressLine1,
+			&i.City,
+			&i.Postcode,
+			&i.Lat,
+			&i.Lng,
+			&i.Phone,
+			&i.IsOpen,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.DeletedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const listRestaurantIDsByOwner = `-- name: ListRestaurantIDsByOwner :many
@@ -70,8 +140,8 @@ ORDER BY id
 `
 
 type ListRestaurantSummariesByIDsRow struct {
-	ID   int64
-	Name string
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
 }
 
 func (q *Queries) ListRestaurantSummariesByIDs(ctx context.Context, dollar_1 []int64) ([]ListRestaurantSummariesByIDsRow, error) {

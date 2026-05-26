@@ -16,23 +16,31 @@ type Querier interface {
 	AdminCountUsers(ctx context.Context, arg AdminCountUsersParams) (int64, error)
 	AdminListUsers(ctx context.Context, arg AdminListUsersParams) ([]User, error)
 	AdminUpdateUserRole(ctx context.Context, arg AdminUpdateUserRoleParams) (User, error)
+	ClearCart(ctx context.Context, cartID int64) error
 	CountOrdersByRestaurants(ctx context.Context, restaurantIds []int64) (int64, error)
 	CountUserAssignmentsByRoleID(ctx context.Context, roleID int64) (int64, error)
+	CreateCart(ctx context.Context, arg CreateCartParams) (Cart, error)
+	CreateOrder(ctx context.Context, arg CreateOrderParams) (Order, error)
+	CreateOrderItem(ctx context.Context, arg CreateOrderItemParams) (OrderItem, error)
 	CreatePageSchema(ctx context.Context, arg CreatePageSchemaParams) (PageSchema, error)
 	CreatePageSchemaVersion(ctx context.Context, arg CreatePageSchemaVersionParams) (PageSchemaVersion, error)
 	CreatePasswordCredential(ctx context.Context, arg CreatePasswordCredentialParams) (AuthCredential, error)
 	CreateRole(ctx context.Context, arg CreateRoleParams) (Role, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
+	DeleteCart(ctx context.Context, id int64) error
 	DeleteRolePermissions(ctx context.Context, roleID int64) error
 	DeleteUserGrant(ctx context.Context, arg DeleteUserGrantParams) error
 	DeleteUserRolesByUserID(ctx context.Context, userID int64) error
 	GetActiveSessionByTokenHash(ctx context.Context, refreshTokenHash string) (Session, error)
+	GetCartByUser(ctx context.Context, userID int64) (Cart, error)
+	GetOrderByCustomer(ctx context.Context, arg GetOrderByCustomerParams) (Order, error)
 	GetOrderInRestaurants(ctx context.Context, arg GetOrderInRestaurantsParams) (Order, error)
 	GetPageSchemaByKey(ctx context.Context, key string) (PageSchema, error)
 	GetPageSchemaVersion(ctx context.Context, arg GetPageSchemaVersionParams) (PageSchemaVersion, error)
 	GetPasswordCredentialByUserID(ctx context.Context, userID int64) (AuthCredential, error)
 	GetPermissionByCode(ctx context.Context, code string) (Permission, error)
+	GetPublicRestaurant(ctx context.Context, id int64) (Restaurant, error)
 	GetRestaurantByID(ctx context.Context, id int64) (Restaurant, error)
 	GetRoleByCode(ctx context.Context, code string) (Role, error)
 	GetRoleByID(ctx context.Context, id int64) (Role, error)
@@ -41,12 +49,18 @@ type Querier interface {
 	GetUserGrant(ctx context.Context, arg GetUserGrantParams) (GetUserGrantRow, error)
 	// Grants the <persona>.default role to the user (no-op if already granted).
 	GrantDefaultRoleForPersona(ctx context.Context, arg GrantDefaultRoleForPersonaParams) error
+	ListCartItems(ctx context.Context, cartID int64) ([]ListCartItemsRow, error)
+	ListMenuCategoriesByRestaurant(ctx context.Context, restaurantID int64) ([]MenuCategory, error)
+	ListMenuItemsByRestaurant(ctx context.Context, restaurantID int64) ([]MenuItem, error)
+	ListOrderItemsByOrder(ctx context.Context, orderID int64) ([]OrderItem, error)
+	ListOrdersByCustomer(ctx context.Context, arg ListOrdersByCustomerParams) ([]ListOrdersByCustomerRow, error)
 	ListOrdersByRestaurants(ctx context.Context, arg ListOrdersByRestaurantsParams) ([]Order, error)
 	ListPageSchemaVersionsBySchemaID(ctx context.Context, pageSchemaID int64) ([]PageSchemaVersion, error)
 	ListPageSchemas(ctx context.Context) ([]PageSchema, error)
 	ListPageSchemasWithUpdater(ctx context.Context) ([]ListPageSchemasWithUpdaterRow, error)
 	ListPermissions(ctx context.Context) ([]Permission, error)
 	ListPermissionsByRoleID(ctx context.Context, roleID int64) ([]Permission, error)
+	ListPublicRestaurants(ctx context.Context) ([]Restaurant, error)
 	ListRestaurantIDsByOwner(ctx context.Context, ownerID int64) ([]int64, error)
 	ListRestaurantSummariesByIDs(ctx context.Context, dollar_1 []int64) ([]ListRestaurantSummariesByIDsRow, error)
 	ListRestaurantsByOwner(ctx context.Context, ownerID int64) ([]Restaurant, error)
@@ -69,14 +83,18 @@ type Querier interface {
 	ListUserRoleCodes(ctx context.Context, userID int64) ([]string, error)
 	// Full role rows for a user (persona-filtered).
 	ListUserRolesDetail(ctx context.Context, userID int64) ([]Role, error)
+	RemoveCartItem(ctx context.Context, arg RemoveCartItemParams) error
 	RevokeSession(ctx context.Context, id int64) error
 	SoftDeletePageSchemaByKey(ctx context.Context, key string) (PageSchema, error)
 	SoftDeleteRole(ctx context.Context, id int64) error
 	UpdateAuthCredentialLastLogin(ctx context.Context, id int64) error
+	UpdateCartRestaurant(ctx context.Context, arg UpdateCartRestaurantParams) (Cart, error)
+	UpdateOrderStatus(ctx context.Context, arg UpdateOrderStatusParams) (Order, error)
 	UpdateOrderStatusInRestaurants(ctx context.Context, arg UpdateOrderStatusInRestaurantsParams) (Order, error)
 	UpdatePageSchemaCurrent(ctx context.Context, arg UpdatePageSchemaCurrentParams) (PageSchema, error)
 	UpdateRoleName(ctx context.Context, arg UpdateRoleNameParams) (Role, error)
 	UpdateSessionLastUsed(ctx context.Context, id int64) error
+	UpsertCartItem(ctx context.Context, arg UpsertCartItemParams) (CartItem, error)
 	// Writes / updates a single (user_id, permission_id) grant.
 	UpsertUserGrant(ctx context.Context, arg UpsertUserGrantParams) error
 	// Writes a (user_id, role_id) assignment with scope + expires_at.

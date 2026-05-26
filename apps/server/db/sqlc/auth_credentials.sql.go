@@ -18,8 +18,8 @@ RETURNING id, user_id, provider, provider_user_id, password_hash, last_login_at,
 `
 
 type CreatePasswordCredentialParams struct {
-	UserID       int64
-	PasswordHash pgtype.Text
+	UserID       int64       `json:"user_id"`
+	PasswordHash pgtype.Text `json:"password_hash"`
 }
 
 func (q *Queries) CreatePasswordCredential(ctx context.Context, arg CreatePasswordCredentialParams) (AuthCredential, error) {

@@ -26,12 +26,15 @@ export const setAuth = (payload: IAuthResponse): void => {
   localStorage.setItem(TOKEN_KEY, payload.access_token);
   localStorage.setItem(REFRESH_KEY, payload.refresh_token);
   localStorage.setItem(USER_KEY, JSON.stringify(payload.user));
+  // Notify AuthContext of the change
+  window.dispatchEvent(new Event('fotr-auth-change'));
 };
 
 export const clearAuth = (): void => {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(REFRESH_KEY);
   localStorage.removeItem(USER_KEY);
+  window.dispatchEvent(new Event('fotr-auth-change'));
 };
 
 export const isAuthenticated = (): boolean => {

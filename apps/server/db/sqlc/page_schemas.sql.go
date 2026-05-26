@@ -18,9 +18,9 @@ RETURNING id, key, current_version, schema_data, created_at, updated_at, deleted
 `
 
 type CreatePageSchemaParams struct {
-	Key            string
-	CurrentVersion int32
-	SchemaData     []byte
+	Key            string `json:"key"`
+	CurrentVersion int32  `json:"current_version"`
+	SchemaData     []byte `json:"schema_data"`
 }
 
 func (q *Queries) CreatePageSchema(ctx context.Context, arg CreatePageSchemaParams) (PageSchema, error) {
@@ -117,16 +117,16 @@ ORDER BY ps.key ASC
 `
 
 type ListPageSchemasWithUpdaterRow struct {
-	ID             int64
-	Key            string
-	CurrentVersion int32
-	SchemaData     []byte
-	CreatedAt      pgtype.Timestamptz
-	UpdatedAt      pgtype.Timestamptz
-	DeletedAt      pgtype.Timestamptz
-	UpdaterID      pgtype.Int8
-	UpdaterName    pgtype.Text
-	UpdaterEmail   pgtype.Text
+	ID             int64              `json:"id"`
+	Key            string             `json:"key"`
+	CurrentVersion int32              `json:"current_version"`
+	SchemaData     []byte             `json:"schema_data"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt      pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt      pgtype.Timestamptz `json:"deleted_at"`
+	UpdaterID      pgtype.Int8        `json:"updater_id"`
+	UpdaterName    pgtype.Text        `json:"updater_name"`
+	UpdaterEmail   pgtype.Text        `json:"updater_email"`
 }
 
 func (q *Queries) ListPageSchemasWithUpdater(ctx context.Context) ([]ListPageSchemasWithUpdaterRow, error) {
@@ -193,9 +193,9 @@ RETURNING id, key, current_version, schema_data, created_at, updated_at, deleted
 `
 
 type UpdatePageSchemaCurrentParams struct {
-	ID             int64
-	CurrentVersion int32
-	SchemaData     []byte
+	ID             int64  `json:"id"`
+	CurrentVersion int32  `json:"current_version"`
+	SchemaData     []byte `json:"schema_data"`
 }
 
 func (q *Queries) UpdatePageSchemaCurrent(ctx context.Context, arg UpdatePageSchemaCurrentParams) (PageSchema, error) {
