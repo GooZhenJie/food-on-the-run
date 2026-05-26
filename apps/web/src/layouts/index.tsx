@@ -1,4 +1,9 @@
 import { Link, Outlet, useLocation } from 'umi';
+import {
+  ShopOutlined,
+  AppstoreOutlined,
+  PieChartOutlined,
+} from '@ant-design/icons';
 import { BottomTabBar } from '@/components/BottomTabBar';
 
 const NAV_HIDDEN_PATHS = ['/login', '/sign-up'];
@@ -7,9 +12,9 @@ export default function Layout() {
   const { pathname } = useLocation();
 
   const navItems = [
-    { to: '/', label: '🍜 Restaurants' },
-    { to: '/restaurant', label: '🏗️ Schema Page' },
-    { to: '/dashboard', label: '📊 Dashboard' },
+    { to: '/', label: 'Restaurants', icon: <ShopOutlined /> },
+    { to: '/restaurant', label: 'Schema Page', icon: <AppstoreOutlined /> },
+    { to: '/dashboard', label: 'Dashboard', icon: <PieChartOutlined /> },
   ];
 
   if (NAV_HIDDEN_PATHS.includes(pathname)) {
@@ -25,13 +30,14 @@ export default function Layout() {
             <Link
               key={item.to}
               to={item.to}
-              className={`text-sm font-medium transition-colors ${
+              className={`inline-flex items-center gap-1.5 text-sm font-medium transition-colors ${
                 pathname === item.to
                   ? 'text-orange-600'
                   : 'text-gray-500 hover:text-gray-800'
               }`}
             >
-              {item.label}
+              {item.icon}
+              <span>{item.label}</span>
             </Link>
           ))}
           <div className="flex-1" />

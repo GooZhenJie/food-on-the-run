@@ -41,7 +41,7 @@ export const CuisineShortcuts: React.FC<ICuisineShortcutsProps> = ({ cuisines, l
             className="flex flex-col items-center gap-2 group"
           >
             <span
-              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl transition-all ${
+              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center text-base sm:text-lg font-bold tracking-wide transition-all ${
                 isActive
                   ? 'ring-2 ring-orange-500 ring-offset-2 scale-105'
                   : 'group-hover:scale-105'

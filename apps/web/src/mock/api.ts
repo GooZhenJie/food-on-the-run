@@ -14,8 +14,10 @@ import {
   CATEGORY_RADAR,
   POPULAR_DISHES_WORDCLOUD,
   KPI_CARDS,
+  OPS_KPI_CARDS,
   GEO_RESTAURANTS,
 } from '../pages/dashboard/mock';
+import { DASHBOARD_PAGE_SCHEMA } from '../pages/dashboard/schema';
 
 export default {
   'GET /api/restaurants': RESTAURANTS,
@@ -28,7 +30,9 @@ export default {
   'GET /api/dashboard/category-radar': CATEGORY_RADAR,
   'GET /api/dashboard/wordcloud': POPULAR_DISHES_WORDCLOUD,
   'GET /api/dashboard/kpi': KPI_CARDS,
+  'GET /api/dashboard/ops-kpi': OPS_KPI_CARDS,
   'GET /api/dashboard/geo': GEO_RESTAURANTS,
+  'GET /api/dashboard/schema': DASHBOARD_PAGE_SCHEMA,
 
   // /api/auth/register, /login, /refresh, /logout are served by the Go backend
   // via the Umi dev proxy (see `proxy` in .umirc.ts).

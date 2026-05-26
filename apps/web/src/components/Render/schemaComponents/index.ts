@@ -7,9 +7,14 @@ import { AuthPage } from './AuthPage';
 import { AuthForm } from './AuthForm';
 import { AuthDivider } from './AuthDivider';
 import { OAuthSection } from './OAuthSection';
+import { DashboardPage } from './DashboardPage';
+import { DashboardSection } from './DashboardSection';
+import { DashboardCard } from './DashboardCard';
+import { KpiGrid } from './KpiGrid';
 
 import { menuGridFixtures } from './MenuGrid/mock';
 import { reviewListFixtures } from './ReviewList/mock';
+import { kpiGridFixtures } from './KpiGrid/mock';
 
 import type { IComponentFixtures } from '../preview/fixtures';
 
@@ -23,6 +28,10 @@ export {
   AuthForm,
   AuthDivider,
   OAuthSection,
+  DashboardPage,
+  DashboardSection,
+  DashboardCard,
+  KpiGrid,
 };
 
 /**
@@ -37,4 +46,5 @@ export const fixturesRegistry: Record<
 > = {
   MenuGrid: menuGridFixtures as IComponentFixtures<unknown>,
   ReviewList: reviewListFixtures as IComponentFixtures<unknown>,
+  KpiGrid: kpiGridFixtures as IComponentFixtures<unknown>,
 };

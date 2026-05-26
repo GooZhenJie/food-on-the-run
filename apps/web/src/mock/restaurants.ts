@@ -272,14 +272,14 @@ export const BANNERS = [
 ];
 
 export const CUISINES = [
-  { value: 'malay', label: 'Malay', icon: '🍛', color: 'bg-orange-50 text-orange-600' },
-  { value: 'chinese', label: 'Chinese', icon: '🥟', color: 'bg-red-50 text-red-600' },
-  { value: 'indian', label: 'Indian', icon: '🍛', color: 'bg-purple-50 text-purple-600' },
-  { value: 'western', label: 'Western', icon: '🍔', color: 'bg-amber-50 text-amber-600' },
-  { value: 'japanese', label: 'Japanese', icon: '🍣', color: 'bg-pink-50 text-pink-600' },
-  { value: 'korean', label: 'Korean', icon: '🍜', color: 'bg-rose-50 text-rose-600' },
-  { value: 'drinks', label: 'Drinks', icon: '🧋', color: 'bg-emerald-50 text-emerald-600' },
-  { value: 'dessert', label: 'Dessert', icon: '🍰', color: 'bg-fuchsia-50 text-fuchsia-600' },
+  { value: 'malay', label: 'Malay', icon: 'MY', color: 'bg-orange-50 text-orange-600' },
+  { value: 'chinese', label: 'Chinese', icon: 'CN', color: 'bg-red-50 text-red-600' },
+  { value: 'indian', label: 'Indian', icon: 'IN', color: 'bg-purple-50 text-purple-600' },
+  { value: 'western', label: 'Western', icon: 'WN', color: 'bg-amber-50 text-amber-600' },
+  { value: 'japanese', label: 'Japanese', icon: 'JP', color: 'bg-pink-50 text-pink-600' },
+  { value: 'korean', label: 'Korean', icon: 'KR', color: 'bg-rose-50 text-rose-600' },
+  { value: 'drinks', label: 'Drinks', icon: 'DR', color: 'bg-emerald-50 text-emerald-600' },
+  { value: 'dessert', label: 'Dessert', icon: 'DS', color: 'bg-fuchsia-50 text-fuchsia-600' },
 ];
 
 export const FILTER_OPTIONS = {

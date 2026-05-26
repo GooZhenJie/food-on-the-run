@@ -1,4 +1,11 @@
 import React from 'react';
+import {
+  RocketOutlined,
+  ThunderboltOutlined,
+  StarFilled,
+  TagOutlined,
+  SafetyCertificateOutlined,
+} from '@ant-design/icons';
 import { useFilterVal } from '@/components/Filter/context';
 import type { IFilterVal } from '@/components/Filter/type';
 
@@ -7,15 +14,15 @@ type TChipKey = 'freeDelivery' | 'under30' | 'highRating' | 'promo' | 'halal';
 interface IChipDef {
   key: TChipKey;
   label: string;
-  icon: string;
+  icon: React.ReactNode;
 }
 
 const CHIPS: IChipDef[] = [
-  { key: 'freeDelivery', label: 'Free delivery', icon: '🚴' },
-  { key: 'under30', label: 'Under 30 min', icon: '⚡' },
-  { key: 'highRating', label: '4.5+ rated', icon: '⭐' },
-  { key: 'promo', label: 'Promo', icon: '🏷️' },
-  { key: 'halal', label: 'Halal', icon: '🌙' },
+  { key: 'freeDelivery', label: 'Free delivery', icon: <RocketOutlined /> },
+  { key: 'under30', label: 'Under 30 min', icon: <ThunderboltOutlined /> },
+  { key: 'highRating', label: '4.5+ rated', icon: <StarFilled /> },
+  { key: 'promo', label: 'Promo', icon: <TagOutlined /> },
+  { key: 'halal', label: 'Halal', icon: <SafetyCertificateOutlined /> },
 ];
 
 export const QuickChips: React.FC = () => {

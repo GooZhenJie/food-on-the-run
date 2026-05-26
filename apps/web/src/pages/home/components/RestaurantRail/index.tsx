@@ -6,7 +6,7 @@ interface IRestaurantRailProps {
   id?: string;
   title: string;
   subtitle?: string;
-  emoji?: string;
+  icon?: React.ReactNode;
   data: IRestaurant[];
   loading?: boolean;
   onSeeAll?: () => void;
@@ -16,7 +16,7 @@ export const RestaurantRail: React.FC<IRestaurantRailProps> = ({
   id,
   title,
   subtitle,
-  emoji,
+  icon,
   data,
   loading,
   onSeeAll,
@@ -30,7 +30,7 @@ export const RestaurantRail: React.FC<IRestaurantRailProps> = ({
       <div className="flex items-end justify-between mb-4 px-1">
         <div>
           <h2 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center gap-2">
-            {emoji && <span>{emoji}</span>}
+            {icon && <span className="text-orange-500">{icon}</span>}
             <span>{title}</span>
           </h2>
           {subtitle && (

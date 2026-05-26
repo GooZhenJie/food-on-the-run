@@ -1,4 +1,11 @@
 import React, { useMemo } from 'react';
+import {
+  FireOutlined,
+  ThunderboltOutlined,
+  GiftOutlined,
+  TagsOutlined,
+  SmileOutlined,
+} from '@ant-design/icons';
 import { FilterBar, FilterProvider } from '@/components/Filter';
 import { useFilterVal } from '@/components/Filter/context';
 import { RestaurantCard } from '@/components/RestaurantCard';
@@ -46,7 +53,7 @@ const AllRestaurants: React.FC<IAllRestaurantsProps> = ({ data, loading }) => {
   if (filtered.length === 0) {
     return (
       <div className="flex flex-col items-center py-20 text-gray-400">
-        <span className="text-5xl mb-3">🍽️</span>
+        <SmileOutlined className="text-5xl mb-3" />
         <p className="text-sm">No restaurants match your filters.</p>
       </div>
     );
@@ -90,7 +97,7 @@ export default function HomePage() {
             id="rail-popular"
             title="Popular near you"
             subtitle="Top-rated kitchens this week"
-            emoji="🔥"
+            icon={<FireOutlined />}
             data={popular}
             loading={loading}
           />
@@ -99,7 +106,7 @@ export default function HomePage() {
             id="rail-under-30"
             title="Ready in 30 min"
             subtitle="Fast picks from nearby"
-            emoji="⚡"
+            icon={<ThunderboltOutlined />}
             data={fast}
             loading={loading}
           />
@@ -108,7 +115,7 @@ export default function HomePage() {
             id="rail-new"
             title="New on Food on the Run"
             subtitle="Freshly joined this month"
-            emoji="🆕"
+            icon={<GiftOutlined />}
             data={fresh}
             loading={loading}
           />
@@ -117,7 +124,7 @@ export default function HomePage() {
             id="rail-promo"
             title="Promos & deals"
             subtitle="Save on your next order"
-            emoji="💸"
+            icon={<TagsOutlined />}
             data={promo}
             loading={loading}
           />

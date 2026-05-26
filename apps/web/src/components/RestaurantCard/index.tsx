@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'umi';
+import { StarFilled, EnvironmentOutlined } from '@ant-design/icons';
 import type { IRestaurantCardProps } from './type';
 
 export const RestaurantCard: React.FC<IRestaurantCardProps> = ({
@@ -59,7 +60,7 @@ export const RestaurantCard: React.FC<IRestaurantCardProps> = ({
         </div>
         <div className="flex items-center gap-3 mt-2 text-[13px] text-gray-600">
           <span className="flex items-center gap-1">
-            <span className="text-amber-500">★</span>
+            <StarFilled className="text-amber-500" />
             <span className="font-semibold text-gray-800">{rating}</span>
           </span>
           <span className="text-gray-300">·</span>
@@ -70,7 +71,10 @@ export const RestaurantCard: React.FC<IRestaurantCardProps> = ({
           </span>
         </div>
         <div className="flex items-center gap-2 mt-1.5">
-          <p className="text-xs text-gray-400 truncate flex-1">📍 {address}</p>
+          <p className="text-xs text-gray-400 truncate flex-1 inline-flex items-center gap-1">
+            <EnvironmentOutlined />
+            <span className="truncate">{address}</span>
+          </p>
           {isHalal && (
             <span className="text-[10px] bg-green-50 text-green-700 rounded-md px-1.5 py-0.5 font-semibold">
               HALAL

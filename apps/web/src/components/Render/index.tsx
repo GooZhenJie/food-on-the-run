@@ -21,6 +21,8 @@ export const Render: React.FC<IRenderProps> = ({ schema }) => {
 
   const props = schema.props || {};
   const hasApi = typeof props.api === 'string';
+  const interval =
+    typeof props.interval === 'number' ? (props.interval as number) : undefined;
 
   const renderChildren = () =>
     schema.children?.map((child, i) => (
@@ -42,7 +44,7 @@ export const Render: React.FC<IRenderProps> = ({ schema }) => {
     }
 
     return (
-      <Service api={props.api as string}>
+      <Service api={props.api as string} interval={interval}>
         <Component {...props}>{renderChildren()}</Component>
       </Service>
     );

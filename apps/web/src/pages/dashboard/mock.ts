@@ -35,11 +35,25 @@ export const POPULAR_DISHES_WORDCLOUD = [
   { name: 'Egg', value: 70 },
 ];
 
+/**
+ * Sales KPIs — top-line merchant metrics (Uber Eats / DoorDash / Grab parity).
+ */
 export const KPI_CARDS = [
-  { label: "Today's Orders", value: 219, unit: '', trend: '+18%' },
-  { label: "Today's Revenue", value: 2498, unit: 'RM', trend: '+23%' },
-  { label: 'Avg. Delivery Time', value: 24, unit: 'min', trend: '-3min' },
-  { label: 'Customer Rating', value: 4.7, unit: '⭐', trend: '+0.1' },
+  { label: "Today's Orders", value: 219, trend: '+18% vs yesterday', direction: 'up' },
+  { label: "Today's Revenue", value: 2498, unit: 'RM', trend: '+23% vs yesterday', direction: 'up' },
+  { label: 'Avg Order Value', value: 11.4, unit: 'RM', trend: '+RM 0.8', direction: 'up' },
+  { label: 'Customer Rating', value: 4.7, unit: '/ 5', trend: '+0.1', direction: 'up', note: 'last 7 days' },
+];
+
+/**
+ * Operations KPIs — store reliability score.
+ * `invertColor: true` means "up is bad" (e.g. cancel rate, prep time).
+ */
+export const OPS_KPI_CARDS = [
+  { label: 'Acceptance Rate', value: 97, unit: '%', trend: '+1%', direction: 'up' },
+  { label: 'Avg Prep Time', value: 14, unit: 'min', trend: '-2min', direction: 'down', invertColor: true },
+  { label: 'Cancellation Rate', value: 2.3, unit: '%', trend: '-0.4%', direction: 'down', invertColor: true },
+  { label: 'Store Online', value: 99, unit: '%', trend: '+0.2%', direction: 'up', note: 'vs last week' },
 ];
 
 export const GEO_RESTAURANTS = [

@@ -16,7 +16,7 @@ export const SalesTrend: React.FC = () => {
     () => ({
       tooltip: { trigger: 'axis' },
       legend: { data: ['Orders', 'Revenue (RM)'], bottom: 0 },
-      grid: { left: 40, right: 20, top: 20, bottom: 40 },
+      grid: { left: 56, right: 56, top: 36, bottom: 52, containLabel: true },
       xAxis: {
         type: 'category',
         data: items.map((d) => d.date),
@@ -27,14 +27,16 @@ export const SalesTrend: React.FC = () => {
         {
           type: 'value',
           name: 'Orders',
-          nameTextStyle: { color: '#6b7280', fontSize: 11 },
+          nameGap: 12,
+          nameTextStyle: { color: '#6b7280', fontSize: 11, align: 'left' },
           axisLabel: { color: '#6b7280', fontSize: 11 },
           splitLine: { lineStyle: { color: '#f3f4f6' } },
         },
         {
           type: 'value',
           name: 'RM',
-          nameTextStyle: { color: '#6b7280', fontSize: 11 },
+          nameGap: 12,
+          nameTextStyle: { color: '#6b7280', fontSize: 11, align: 'right' },
           axisLabel: { color: '#6b7280', fontSize: 11 },
           splitLine: { show: false },
         },

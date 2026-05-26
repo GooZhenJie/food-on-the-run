@@ -4,10 +4,26 @@
   "private": true,
   "sideEffects": false,
   "exports": {
-    ".": "./src/utils/cn.ts"
+    ".": "./src/utils/cn.ts",
+    "./components/AsyncBoundary": "./src/components/AsyncBoundary/index.tsx",
+    "./components/AsyncBoundary/context": "./src/components/AsyncBoundary/context.ts",
+    "./components/AsyncBoundary/type": "./src/components/AsyncBoundary/type.d.ts",
+    "./hooks/useAsyncData": "./src/hooks/useAsyncData/index.ts",
+    "./hooks/useAsyncData/type": "./src/hooks/useAsyncData/type.d.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.5.0"
+  },
+  "peerDependencies": {
+    "@ant-design/icons": "^6.0.0",
+    "antd": "^6.0.0",
+    "react": "^18"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^6.1.1",
+    "@types/react": "^18.0.33",
+    "antd": "^6.3.6",
+    "react": "^18.3.1"
   }
 }

@@ -1,7 +1,16 @@
-export interface IServiceContextValue {
-  data: unknown;
+import type { AsyncStatus } from '@food/shared/hooks/useAsyncData/type';
+
+export interface IServiceContextValue<T = unknown> {
+  status: AsyncStatus;
+  data: T | undefined;
+  isRefetching: boolean;
+  refetch: () => Promise<void>;
+
+  /** @deprecated use `status === 'loading'` instead. Kept for back-compat. */
   loading: boolean;
+  /** @deprecated kept as a string message for back-compat; use a parent AsyncBoundary for richer error UX. */
   error: string | null;
+  /** @deprecated alias of `refetch`; kept for back-compat. */
   refresh: () => void;
 }
 

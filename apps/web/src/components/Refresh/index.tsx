@@ -1,4 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
+import {
+  SyncOutlined,
+  CheckCircleFilled,
+  ExclamationCircleFilled,
+  ReloadOutlined,
+} from '@ant-design/icons';
 import { RefreshContext } from './context';
 
 interface IRefreshProps {
@@ -61,11 +67,23 @@ export const Refresh: React.FC<IRefreshProps> = ({ children }) => {
     });
   }, []);
 
-  const statusLabel: Record<TStatus, string> = {
-    idle: '',
-    refreshing: '🔄 Refreshing...',
-    success: '✅ All data up to date',
-    error: '⚠️ Some requests failed',
+  const statusNode: Record<TStatus, React.ReactNode> = {
+    idle: null,
+    refreshing: (
+      <>
+        <SyncOutlined spin /> Refreshing...
+      </>
+    ),
+    success: (
+      <>
+        <CheckCircleFilled /> All data up to date
+      </>
+    ),
+    error: (
+      <>
+        <ExclamationCircleFilled /> Some requests failed
+      </>
+    ),
   };
 
   const statusColor: Record<TStatus, string> = {
@@ -83,16 +101,18 @@ export const Refresh: React.FC<IRefreshProps> = ({ children }) => {
         <div />
         <div className="flex items-center gap-3">
           {status !== 'idle' && (
-            <span className={`text-sm px-3 py-1 rounded-full ${statusColor[status]}`}>
-              {statusLabel[status]}
+            <span
+              className={`inline-flex items-center gap-1.5 text-sm px-3 py-1 rounded-full ${statusColor[status]}`}
+            >
+              {statusNode[status]}
             </span>
           )}
           <button
             onClick={triggerRefreshAll}
             disabled={status === 'refreshing'}
-            className="flex items-center gap-2 text-sm px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="inline-flex items-center gap-2 text-sm px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            <span className={status === 'refreshing' ? 'animate-spin' : ''}>↻</span>
+            <ReloadOutlined spin={status === 'refreshing'} />
             Refresh All
           </button>
         </div>
