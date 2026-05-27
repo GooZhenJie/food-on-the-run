@@ -9,7 +9,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     fetchPublicPageSchema('/login')
-      .then((res) => setSchema(res.schema_data))
+      .then((res) => setSchema(res.schema_data ?? LOGIN_PAGE_SCHEMA))
       .catch(() => setSchema(LOGIN_PAGE_SCHEMA));
   }, []);
 

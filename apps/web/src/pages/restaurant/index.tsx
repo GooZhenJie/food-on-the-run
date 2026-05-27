@@ -21,7 +21,7 @@ export default function RestaurantPage() {
     fetcher: async () => {
       try {
         const res = await fetchPublicPageSchema('/restaurant');
-        return res.schema_data;
+        return res.schema_data ?? (RESTAURANT_PAGE_SCHEMA as ISchemaNode);
       } catch {
         return RESTAURANT_PAGE_SCHEMA as ISchemaNode;
       }

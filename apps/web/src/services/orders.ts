@@ -1,4 +1,4 @@
-import request from './request';
+import { request } from 'umi';
 import type { ICartItem } from '@/services/type';
 
 export interface ICreateOrderParams {

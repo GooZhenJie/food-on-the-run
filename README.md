@@ -90,6 +90,18 @@ go run main.go
 | PostgreSQL | `5432` |
 | Redis | `6379` |
 
+## 测试账号
+
+所有账号密码统一为 `123456`。
+
+| 角色 | 邮箱 | 登录入口 | 说明 |
+| --- | --- | --- | --- |
+| 超级管理员 | `admin@fotr.local` | 管理端 http://localhost:8001 | 拥有 `admin.super` 角色 |
+| 商家 | `merchant@fotr.local` | 管理端 + 消费端 | 名为 Lily Tan，绑定 3 家餐厅 |
+| 普通用户 | `customer@fotr.local` | 消费端 http://localhost:8000 | 名为 Demo Customer |
+
+merchant 账号绑定的餐厅：Aunty Lily's Nasi Lemak、The Wonton Noodle Bar、Tandoor Palace。
+
 ## 常用命令
 
 | 命令 | 说明 |

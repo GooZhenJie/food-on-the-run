@@ -82,7 +82,7 @@ func (h *PageSchemaHandler) GetPublished(w http.ResponseWriter, r *http.Request)
 	schema, err := h.queries.GetPageSchemaByKey(r.Context(), key)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			respondError(w, http.StatusNotFound, "schema not found")
+			respondJSON(w, http.StatusOK, map[string]any{"schema_data": nil})
 			return
 		}
 		log.Printf("schemas: get by key failed: %v", err)

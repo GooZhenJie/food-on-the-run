@@ -29,7 +29,7 @@ export default function DashboardPage() {
     fetcher: async () => {
       try {
         const res = await fetchPublicPageSchema('/dashboard');
-        return res.schema_data;
+        return res.schema_data ?? (DASHBOARD_PAGE_SCHEMA as ISchemaNode);
       } catch {
         return DASHBOARD_PAGE_SCHEMA as ISchemaNode;
       }

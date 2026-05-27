@@ -1,4 +1,4 @@
-import request from './request';
+import { request } from 'umi';
 
 // Backend returns this shape from the restaurants table
 export interface IRestaurantRow {

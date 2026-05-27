@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { history, Link } from 'umi';
+import { history, Link, useModel } from 'umi';
 import { App, Button, Checkbox, Form, Input } from 'antd';
 import type { FormInstance, Rule } from 'antd/es/form';
 import { setAuth, validatePassword } from '@/utils/auth';
 import type { IAuthResponse } from '@/services/type';
+import type { IGlobalState } from '@/app';
 import type {
   IAuthFieldConfig,
   IAuthFormOnSuccess,
@@ -131,10 +132,13 @@ const runOnSuccess = (
   data: IAuthFormApiResponse,
   cfg: IAuthFormOnSuccess | undefined,
   messageApi: { success: (content: string) => void },
+  setInitialState: (fn: (prev: IGlobalState | undefined) => IGlobalState) => void,
 ) => {
   if (!cfg) return;
   if (cfg.storeAuth) {
-    setAuth(data as unknown as IAuthResponse);
+    const authPayload = data as unknown as IAuthResponse;
+    setAuth(authPayload);
+    setInitialState((prev) => ({ ...prev, currentUser: authPayload.user }));
   }
   if (cfg.successMessage) {
     const text = cfg.successMessage.replace(
@@ -196,6 +200,7 @@ export const AuthForm: React.FC<IAuthFormProps> = ({
   const [form] = Form.useForm<Record<string, unknown>>();
   const [submitting, setSubmitting] = useState(false);
   const { message } = App.useApp();
+  const { setInitialState } = useModel('@@initialState');
 
   const initialValues: Record<string, unknown> = {};
   fields.forEach((f) => {
@@ -227,7 +232,7 @@ export const AuthForm: React.FC<IAuthFormProps> = ({
       }
 
       const data: IAuthFormApiResponse = res.status === 204 ? {} : await res.json();
-      runOnSuccess(data, onSuccess, message);
+      runOnSuccess(data, onSuccess, message, setInitialState);
     } catch (err) {
       message.error(err instanceof Error ? err.message : 'Request failed');
     } finally {

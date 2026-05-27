@@ -9,7 +9,7 @@ export default function SignUpPage() {
 
   useEffect(() => {
     fetchPublicPageSchema('/sign-up')
-      .then((res) => setSchema(res.schema_data))
+      .then((res) => setSchema(res.schema_data ?? SIGN_UP_PAGE_SCHEMA))
       .catch(() => setSchema(SIGN_UP_PAGE_SCHEMA));
   }, []);
 
