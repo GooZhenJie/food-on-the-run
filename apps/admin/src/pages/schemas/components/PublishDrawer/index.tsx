@@ -47,6 +47,13 @@ export const PublishDrawer: React.FC<IPublishDrawerProps> = ({
     if (open) {
       form.resetFields();
       form.setFieldsValue({ key: initialKey ?? '' });
+      if (initialKey) {
+        getPageSchema(initialKey)
+          .then((existing) => {
+            form.setFieldValue('schemaText', stringifyJson(existing.schema_data));
+          })
+          .catch(() => {});
+      }
     }
   }, [open, initialKey, form]);
 

@@ -51,7 +51,8 @@ func main() {
 	customerOrderHandler := handlers.NewCustomerOrderHandler(pool)
 	publicRestaurantHandler := handlers.NewPublicRestaurantHandler(pool)
 	dashboardHandler := handlers.NewDashboardHandler()
-	registerRoutes(mux, pool, authHandler, pageSchemaHandler, userHandler, roleHandler, userGrantHandler, merchantHandler, menuHandler, customerCartHandler, customerOrderHandler, publicRestaurantHandler, dashboardHandler)
+	adminRestaurantHandler := handlers.NewAdminRestaurantHandler(pool)
+	registerRoutes(mux, pool, authHandler, pageSchemaHandler, userHandler, roleHandler, userGrantHandler, merchantHandler, menuHandler, customerCartHandler, customerOrderHandler, publicRestaurantHandler, dashboardHandler, adminRestaurantHandler)
 
 	handler := middleware.CORS(mux)
 
@@ -73,6 +74,7 @@ func registerRoutes(
 	orderH *handlers.CustomerOrderHandler,
 	prh *handlers.PublicRestaurantHandler,
 	dh *handlers.DashboardHandler,
+	arh *handlers.AdminRestaurantHandler,
 ) {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
@@ -214,6 +216,18 @@ func registerRoutes(
 	)
 
 	mux.Handle("/api/admin/", middleware.RequireAuth(middleware.RequireAdmin(adminMux)))
+
+	// Restaurant management — accessible to both admin and merchant.
+	restaurantMux := http.NewServeMux()
+	restaurantMux.HandleFunc("GET /api/admin/restaurants/export", arh.AdminExportRestaurants)
+	restaurantMux.HandleFunc("GET /api/admin/restaurants", arh.AdminListRestaurants)
+	restaurantMux.HandleFunc("GET /api/admin/restaurants/{id}", arh.AdminGetRestaurant)
+	restaurantMux.HandleFunc("POST /api/admin/restaurants", arh.AdminCreateRestaurant)
+	restaurantMux.HandleFunc("PATCH /api/admin/restaurants/{id}", arh.AdminUpdateRestaurant)
+	restaurantMux.HandleFunc("DELETE /api/admin/restaurants/{id}", arh.AdminDeleteRestaurant)
+	restaurantMux.HandleFunc("POST /api/admin/restaurants/{id}/status", arh.AdminUpdateRestaurantStatus)
+	mux.Handle("/api/admin/restaurants", middleware.RequireAuth(middleware.RequireAdminOrMerchant(restaurantMux)))
+	mux.Handle("/api/admin/restaurants/", middleware.RequireAuth(middleware.RequireAdminOrMerchant(restaurantMux)))
 
 	merchantMux := http.NewServeMux()
 	merchantMux.HandleFunc("GET /api/merchant/restaurants", mh.ListMyRestaurants)

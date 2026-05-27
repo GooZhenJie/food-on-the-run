@@ -1,0 +1,3 @@
+ALTER TABLE restaurants
+  DROP COLUMN IF EXISTS cuisine,
+  DROP COLUMN IF EXISTS status;

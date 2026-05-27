@@ -1,14 +1,22 @@
 import { defineConfig } from "umi";
 
 export default defineConfig({
+  plugins: [
+    '@umijs/plugins/dist/initial-state',
+    '@umijs/plugins/dist/model',
+    '@umijs/plugins/dist/access',
+  ],
+  model: {},
+  initialState: {},
+  access: {},
   routes: [
     { path: "/login", component: "login", layout: false },
     { path: "/", component: "dashboard" },
     { path: "/restaurants", component: "restaurants" },
     { path: "/orders", component: "orders" },
-    { path: "/users", component: "users" },
-    { path: "/permissions", component: "permissions" },
-    { path: "/schemas", component: "schemas" },
+    { path: "/users", component: "users", access: "canManageUsers" },
+    { path: "/permissions", component: "permissions", access: "canManagePermissions" },
+    { path: "/schemas", component: "schemas", access: "canManageSchemas" },
   ],
 
   define: {

@@ -6,7 +6,7 @@
 -- ============================================================
 
 INSERT INTO users (name, email, phone, role)
-SELECT 'Lily Tan', 'merchant@fotr.local', '+60111234567', 'customer'::user_role
+SELECT 'Lily Tan', 'merchant@fotr.local', '+60111234567', 'merchant'::user_role
 WHERE NOT EXISTS (
   SELECT 1 FROM users WHERE email = 'merchant@fotr.local' AND deleted_at IS NULL
 );

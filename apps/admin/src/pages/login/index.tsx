@@ -1,27 +1,30 @@
 import { useState } from 'react';
 import { Button, Card, Form, Input, message } from 'antd';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 import { adminLogin } from '@/services/auth';
 import type { IAdminLoginParams } from '@/services/type';
 import { setAuth } from '@/utils/auth';
+import { ADMIN_ALLOWED_ROLES } from './config';
 
 export default function LoginPage() {
   const [form] = Form.useForm<IAdminLoginParams>();
   const [submitting, setSubmitting] = useState(false);
+  const { setInitialState } = useModel('@@initialState');
 
   const handleSubmit = async (values: IAdminLoginParams): Promise<void> => {
     setSubmitting(true);
     try {
       const res = await adminLogin(values);
-      if (res.user.role !== 'admin') {
-        message.error('Only admin accounts can sign in here');
+      if (!ADMIN_ALLOWED_ROLES.includes(res.user.role)) {
+        message.error('Invalid email or password');
         return;
       }
       setAuth(res);
+      await setInitialState({ currentUser: res.user });
       message.success(`Welcome, ${res.user.name}`);
       history.push('/');
     } catch (err) {
-      message.error(err instanceof Error ? err.message : 'Login failed');
+      message.error('Invalid email or password');
     } finally {
       setSubmitting(false);
     }

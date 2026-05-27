@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Drawer, Empty, Spin, Tag, Typography, message } from 'antd';
+import { Button, Drawer, Empty, Spin, Tag, Tooltip, Typography, message } from 'antd';
+import { CopyOutlined } from '@ant-design/icons';
 import type { PageSchemaVersion } from '@/services/schemas';
 import { listPageSchemaVersions } from '@/services/schemas';
 import type { IVersionsDrawerProps } from './type';
@@ -13,6 +14,31 @@ export const VersionsDrawer: React.FC<IVersionsDrawerProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [versions, setVersions] = useState<PageSchemaVersion[]>([]);
+  const [copyingId, setCopyingId] = useState<number | null>(null);
+
+  const handleCopy = async (v: PageSchemaVersion): Promise<void> => {
+    setCopyingId(v.id);
+    const text = JSON.stringify(v.schema_data, null, 2);
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      message.success(`v${v.version} config copied`);
+    } catch {
+      message.error('Failed to copy');
+    } finally {
+      setCopyingId(null);
+    }
+  };
 
   useEffect(() => {
     if (!open || !schemaKey) return;
@@ -52,10 +78,19 @@ export const VersionsDrawer: React.FC<IVersionsDrawerProps> = ({
                   <Text type="secondary" className="text-xs">
                     {new Date(v.created_at).toLocaleString()}
                   </Text>
+                  <Text type="secondary" className="text-xs">
+                    by #{v.creator_id}
+                  </Text>
                 </div>
-                <Text type="secondary" className="text-xs">
-                  by #{v.creator_id}
-                </Text>
+                <Tooltip title="Copy config">
+                  <Button
+                    size="small"
+                    type="text"
+                    icon={<CopyOutlined />}
+                    loading={copyingId === v.id}
+                    onClick={() => handleCopy(v)}
+                  />
+                </Tooltip>
               </div>
               {v.note && (
                 <Paragraph className="!mb-2 text-sm text-gray-700">

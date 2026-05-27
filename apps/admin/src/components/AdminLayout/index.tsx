@@ -9,7 +9,7 @@ import {
   ShoppingCartOutlined,
   TeamOutlined,
 } from '@ant-design/icons';
-import { history, useLocation } from 'umi';
+import { history, useAccess, useLocation } from 'umi';
 import { clearAuth } from '@/utils/auth';
 import type { AdminLayoutProps, NavItem } from './type';
 
@@ -20,9 +20,9 @@ const NAV_ITEMS: NavItem[] = [
   { key: 'dashboard', path: '/', label: 'Dashboard', icon: <DashboardOutlined /> },
   { key: 'restaurants', path: '/restaurants', label: 'Restaurants', icon: <ShopOutlined /> },
   { key: 'orders', path: '/orders', label: 'Orders', icon: <ShoppingCartOutlined /> },
-  { key: 'users', path: '/users', label: 'Users', icon: <TeamOutlined /> },
-  { key: 'permissions', path: '/permissions', label: 'Permissions', icon: <SafetyCertificateOutlined /> },
-  { key: 'schemas', path: '/schemas', label: 'Page Schemas', icon: <AppstoreOutlined /> },
+  { key: 'users', path: '/users', label: 'Users', icon: <TeamOutlined />, accessKey: 'canManageUsers' },
+  { key: 'permissions', path: '/permissions', label: 'Permissions', icon: <SafetyCertificateOutlined />, accessKey: 'canManagePermissions' },
+  { key: 'schemas', path: '/schemas', label: 'Page Schemas', icon: <AppstoreOutlined />, accessKey: 'canManageSchemas' },
 ];
 
 const BrandBar: React.FC = () => (
@@ -37,13 +37,18 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const screens = useBreakpoint();
   const isMobile = screens.md === false;
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const access = useAccess();
+
+  const visibleItems = NAV_ITEMS.filter(
+    (item) => !item.accessKey || access[item.accessKey as keyof typeof access],
+  );
 
   useEffect(() => {
     setDrawerOpen(false);
   }, [pathname]);
 
   const activeKey =
-    NAV_ITEMS.find((item) =>
+    visibleItems.find((item) =>
       item.path === '/' ? pathname === '/' : pathname.startsWith(item.path),
     )?.key ?? 'dashboard';
 
@@ -52,13 +57,13 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       mode="inline"
       theme="dark"
       selectedKeys={[activeKey]}
-      items={NAV_ITEMS.map((item) => ({
+      items={visibleItems.map((item) => ({
         key: item.key,
         icon: item.icon,
         label: item.label,
       }))}
       onClick={({ key }) => {
-        const target = NAV_ITEMS.find((item) => item.key === key);
+        const target = visibleItems.find((item) => item.key === key);
         if (target) {
           history.push(target.path);
           setDrawerOpen(false);

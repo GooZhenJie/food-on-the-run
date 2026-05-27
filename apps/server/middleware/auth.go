@@ -68,6 +68,23 @@ func RequireMerchant(next http.Handler) http.Handler {
 	return RequirePersona(auth.PersonaMerchant)(next)
 }
 
+// RequireAdminOrMerchant allows both admin and merchant personas through.
+// Must be chained after RequireAuth.
+func RequireAdminOrMerchant(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		actor := ActorFrom(r.Context())
+		if actor == nil {
+			writeError(w, http.StatusUnauthorized, "authentication required")
+			return
+		}
+		if !actor.HasPersona(auth.PersonaAdmin) && !actor.HasPersona(auth.PersonaMerchant) {
+			writeError(w, http.StatusForbidden, "admin or merchant persona required")
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 // RequirePermission is a placeholder for Phase 2; it reads fine today but
 // always falls through to Can() which only honors the admin.super short-circuit
 // until roles/permissions are populated on the Actor.
