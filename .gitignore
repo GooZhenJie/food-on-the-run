@@ -47,3 +47,6 @@ Thumbs.db
 .claude
 .cursor
 .codebuddy
+
+# MCP config (contains API keys/tokens)
+.mcp.json

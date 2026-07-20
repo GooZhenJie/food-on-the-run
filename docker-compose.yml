@@ -6,13 +6,14 @@ name: food-on-the-run
 #   docker compose up -d
 #   docker compose --profile prod up -d --build
 #
+# Prod host ports (9000/9001) differ from pnpm dev (8000/8001) so both can run together.
 # claude-sandbox mounts agent-configs at the same absolute host path so
 # .claude/skills|rules symlinks resolve inside the container.
 
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: fotr-postgres
+    container_name: postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-fotr}
@@ -30,7 +31,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: fotr-redis
+    container_name: redis
     restart: unless-stopped
     ports:
       - '127.0.0.1:6379:6379'
@@ -45,7 +46,7 @@ services:
   claude-sandbox:
     build:
       context: ./docker/claude-sandbox
-    container_name: fotr-claude-sandbox
+    container_name: claude-sandbox
     working_dir: /workspace
     volumes:
       - .:/workspace
@@ -78,14 +79,14 @@ services:
     build:
       context: ./apps/server
       dockerfile: Dockerfile
-    container_name: fotr-server
+    container_name: server
     restart: unless-stopped
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER:-fotr}:${POSTGRES_PASSWORD:-fotr_secret}@postgres:5432/${POSTGRES_DB:-fotr_dev}?sslmode=disable
       REDIS_URL: redis://redis:6379
       SERVER_PORT: '8080'
       JWT_SECRET: ${JWT_SECRET:-dev_jwt_secret_change_me}
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:8000,http://localhost:8001}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:9000,http://localhost:9001}
     depends_on:
       postgres:
         condition: service_healthy
@@ -97,10 +98,10 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.web
-    container_name: fotr-web
+    container_name: web
     restart: unless-stopped
     ports:
-      - '127.0.0.1:8000:80'
+      - '127.0.0.1:9000:80'
     depends_on:
       - server
 
@@ -109,10 +110,10 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.admin
-    container_name: fotr-admin
+    container_name: admin
     restart: unless-stopped
     ports:
-      - '127.0.0.1:8001:80'
+      - '127.0.0.1:9001:80'
     depends_on:
       - server
 
