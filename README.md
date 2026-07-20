@@ -255,11 +255,19 @@ docker pull ghcr.io/${GHCR_OWNER}/fotr-admin:${IMAGE_TAG}
 
 | 镜像 | Tags |
 | --- | --- |
-| `ghcr.io/goozhenjie/fotr-server` | `release-latest`、`release-<commit-sha>` |
-| `ghcr.io/goozhenjie/fotr-web` | 同上 |
-| `ghcr.io/goozhenjie/fotr-admin` | 同上 |
+| `ghcr.io/goozhenjie/food-on-the-run/fotr-server` | `release-latest`、`release-<commit-sha>` |
+| `ghcr.io/goozhenjie/food-on-the-run/fotr-web` | 同上 |
+| `ghcr.io/goozhenjie/food-on-the-run/fotr-admin` | 同上 |
+
+镜像路径含仓库名 `food-on-the-run`，以便与 GitHub 仓库自动关联，`GITHUB_TOKEN` 才有写权限。
 
 在 GitHub 仓库 **Actions** 页查看构建日志；成功后 **Packages** 页可见镜像。
+
+**排错：push 报 `403 Forbidden`**
+
+1. **仓库 Settings → Actions → General → Workflow permissions** 必须为 **Read and write permissions**（最常见原因）。
+2. 若曾用 PAT 手动 push 到 `ghcr.io/goozhenjie/fotr-server`（无仓库名前缀），该 Package 可能未关联本仓库 — 到 Package 设置页 **Connect repository** 绑定 `food-on-the-run`，或改用上方带 `food-on-the-run/` 前缀的路径。
+3. workflow 已关闭 `provenance` / `sbom` 上传（`docker/build-push-action` 默认开启时也可能触发 403）。
 
 **本地运行 CI 构建的镜像**
 
