@@ -1,7 +1,19 @@
+name: food-on-the-run
+
+# Default stack: claude-sandbox + postgres + redis (light dev infra).
+# Production deployment target (CI/CD): server + web + admin behind the "prod" profile.
+#
+#   docker compose up -d
+#   docker compose --profile prod up -d --build
+#
+# Prod host ports (9000/9001) differ from pnpm dev (8000/8001) so both can run together.
+# claude-sandbox mounts agent-configs at the same absolute host path so
+# .claude/skills|rules symlinks resolve inside the container.
+
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: fotr-postgres
+    container_name: postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-fotr}
@@ -19,7 +31,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: fotr-redis
+    container_name: redis
     restart: unless-stopped
     ports:
       - '127.0.0.1:6379:6379'
@@ -31,6 +43,81 @@ services:
       timeout: 5s
       retries: 5
 
+  claude-sandbox:
+    build:
+      context: ./docker/claude-sandbox
+    container_name: claude-sandbox
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      # Persists `claude login` credentials (~/.claude, ~/.claude.json) across
+      # container recreation. Leave ANTHROPIC_API_KEY unset in .env to use
+      # account login instead of an API key.
+      - claude_home:/home/node
+      # .claude/skills|rules|commands|agents entries are symlinks to agent-configs
+      # using absolute host paths — mount at the identical path inside the container.
+      # Read-write so the agent-configs-guide skill's CRUD flow (setup.js) works.
+      - ${AGENT_CONFIGS_HOST_PATH:-/Users/goozhenjie/Documents/www/agent-configs}:/Users/goozhenjie/Documents/www/agent-configs
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      PGHOST: postgres
+      PGUSER: ${POSTGRES_USER:-fotr}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-fotr_secret}
+      PGDATABASE: ${POSTGRES_DB:-fotr_dev}
+      DATABASE_URL: postgres://${POSTGRES_USER:-fotr}:${POSTGRES_PASSWORD:-fotr_secret}@postgres:5432/${POSTGRES_DB:-fotr_dev}?sslmode=disable
+      REDIS_URL: redis://redis:6379
+    stdin_open: true
+    tty: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  server:
+    profiles: ['prod']
+    build:
+      context: ./apps/server
+      dockerfile: Dockerfile
+    container_name: server
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-fotr}:${POSTGRES_PASSWORD:-fotr_secret}@postgres:5432/${POSTGRES_DB:-fotr_dev}?sslmode=disable
+      REDIS_URL: redis://redis:6379
+      SERVER_PORT: '8080'
+      JWT_SECRET: ${JWT_SECRET:-dev_jwt_secret_change_me}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:9000,http://localhost:9001}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  web:
+    profiles: ['prod']
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.web
+    container_name: web
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:9000:80'
+    depends_on:
+      - server
+
+  admin:
+    profiles: ['prod']
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.admin
+    container_name: admin
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:9001:80'
+    depends_on:
+      - server
+
 volumes:
   postgres_data:
   redis_data:
+  claude_home:

@@ -1,5 +1,5 @@
-import { history } from 'umi';
 import { clearAuth, getAccessToken } from '@/utils/auth';
+import { history } from 'umi';
 
 interface RequestOptions<TBody = unknown> {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
