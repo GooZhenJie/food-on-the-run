@@ -1,0 +1,24 @@
+# 使用 GHCR 上 CI 构建的镜像运行 prod 栈（不在本地 build）。
+#
+#   export IMAGE_TAG=release-latest   # 或 release-<commit-sha>
+#   docker compose -f docker-compose.yml -f docker-compose.ghcr.yml \
+#     --profile prod up -d postgres redis server web admin
+#
+# 私有镜像需先登录：
+#   echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+
+services:
+  server:
+    build: !reset null
+    image: ghcr.io/${GHCR_OWNER:-goozhenjie}/fotr-server:${IMAGE_TAG:?set IMAGE_TAG e.g. release-latest}
+    pull_policy: always
+
+  web:
+    build: !reset null
+    image: ghcr.io/${GHCR_OWNER:-goozhenjie}/fotr-web:${IMAGE_TAG}
+    pull_policy: always
+
+  admin:
+    build: !reset null
+    image: ghcr.io/${GHCR_OWNER:-goozhenjie}/fotr-admin:${IMAGE_TAG}
+    pull_policy: always
