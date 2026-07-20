@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
-import { Button, Drawer, Space, Spin, Tag } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
+import { Button, Drawer, Space, Spin, Tag } from 'antd';
+import React, { useMemo } from 'react';
 import { PreviewToolbar } from './Toolbar';
 import { usePreviewIframe } from './hooks';
-import { buildPreviewUrl, previewIframeWidth } from './utils';
 import type { IPreviewDrawerProps } from './type';
+import { buildPreviewUrl, previewIframeWidth } from './utils';
 
 export const PreviewDrawer: React.FC<IPreviewDrawerProps> = ({
   open,
@@ -35,6 +35,7 @@ export const PreviewDrawer: React.FC<IPreviewDrawerProps> = ({
     <Drawer
       title={
         <Space>
+          <span>Test</span>
           <span>Preview</span>
           {title ? <Tag color="orange">{title}</Tag> : null}
         </Space>
