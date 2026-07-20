@@ -10,15 +10,15 @@
 services:
   server:
     build: !reset null
-    image: ghcr.io/${GHCR_OWNER:-goozhenjie}/fotr-server:${IMAGE_TAG:?set IMAGE_TAG e.g. release-latest}
+    image: ghcr.io/${GHCR_OWNER:-goozhenjie}/food-on-the-run/fotr-server:${IMAGE_TAG:?set IMAGE_TAG e.g. release-latest}
     pull_policy: always
 
   web:
     build: !reset null
-    image: ghcr.io/${GHCR_OWNER:-goozhenjie}/fotr-web:${IMAGE_TAG}
+    image: ghcr.io/${GHCR_OWNER:-goozhenjie}/food-on-the-run/fotr-web:${IMAGE_TAG}
     pull_policy: always
 
   admin:
     build: !reset null
-    image: ghcr.io/${GHCR_OWNER:-goozhenjie}/fotr-admin:${IMAGE_TAG}
+    image: ghcr.io/${GHCR_OWNER:-goozhenjie}/food-on-the-run/fotr-admin:${IMAGE_TAG}
     pull_policy: always
