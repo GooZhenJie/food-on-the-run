@@ -1,6 +1,7 @@
 import { defineConfig } from "umi";
 
 export default defineConfig({
+  esbuildMinifyIIFE: true,
   plugins: [
     '@umijs/plugins/dist/initial-state',
     '@umijs/plugins/dist/model',

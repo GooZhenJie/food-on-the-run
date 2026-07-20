@@ -109,3 +109,17 @@ merchant 账号绑定的餐厅：Aunty Lily's Nasi Lemak、The Wonton Noodle Bar
 | `pnpm dev` | 启动所有应用的开发服务器 |
 | `pnpm build` | 构建所有应用 |
 | `pnpm lint` | 对所有包执行 lint 检查 |
+
+# Debug
+
+## Debugging DB Connections
+
+If DBeaver or your backend services cannot connect to the database, use the following commands to diagnose the issue:
+
+```bash
+# 1. Check if the PostgreSQL port is reachable
+nc -zv 127.0.0.1 5432
+
+# 2. Identify which process is binding to the port (e.g., Docker vs. Native Postgres)
+sudo lsof -i tcp:5432
+```

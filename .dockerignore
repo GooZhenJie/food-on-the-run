@@ -1,0 +1,10 @@
+node_modules
+**/node_modules
+**/dist
+**/.umi
+**/.umi-production
+**/.turbo
+.git
+.env*
+.codegraph
+docs
